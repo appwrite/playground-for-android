@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.maitretech.mydemo.R;
+import com.appwrite.mydemo.R;
 
 import java.io.IOException;
 
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(loginBtnListener);
         getDataBtn.setOnClickListener(getDataClickListener);
         client = new Client(getApplicationContext());
-        client.setEndpoint("<Endpoint URL>"); //Enter Endpoint URL
-        client.setProject("<ProjectID>"); //Enter ProjectID
+        client.setEndpoint("<Endpoint>"); //Enter Endpoint URL
+        client.setProject("<ProjectId>"); //Enter ProjectID
     }
 
     private View.OnClickListener loginBtnListener = new View.OnClickListener(){

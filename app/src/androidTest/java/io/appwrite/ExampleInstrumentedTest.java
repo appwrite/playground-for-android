@@ -1,4 +1,4 @@
-package com.maitretech.mydemo;
+package io.appwrite;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.appwrite.mydemo", appContext.getPackageName());
+        Assert.assertEquals("com.appwrite.mydemo", appContext.getPackageName());
     }
 }

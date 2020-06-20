@@ -1,4 +1,4 @@
-package com.maitretech.mydemo;
+package io.appwrite;
 
 import org.junit.Test;
 
