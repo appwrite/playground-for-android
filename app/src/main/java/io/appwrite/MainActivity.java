@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.appwrite.mydemo.R;
+import com.maitretech.mydemo.R;
 
 import java.io.IOException;
 
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(loginBtnListener);
         getDataBtn.setOnClickListener(getDataClickListener);
         client = new Client(getApplicationContext());
-        client.setEndpoint("<Endpoint>"); //Enter Endpoint URL
-        client.setProject("<ProjectId>"); //Enter ProjectID
+        client.setEndpoint(""); //Enter Endpoint
+        client.setProject(""); //Enter ProjectID
     }
 
     private View.OnClickListener loginBtnListener = new View.OnClickListener(){
@@ -88,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                     response = account.getSessions().execute();
                     if(response.code() == 401){
-                          response = account.createSession("abc@example.com","Hello@123")
+
+                          //Enter Email an Passowrd from which you want to login
+                          response = account.createSession("","")
                             .execute();
                           isLogedIn  = true;
                     }
@@ -139,8 +141,9 @@ public class MainActivity extends AppCompatActivity {
         protected Response doInBackground(Void... params) {
            try {
                 database = new Database(client);
-                //Enter CollectionID and DocumentID
-                Response response = database.getDocument("<CollectionID>","<DocumentID>").execute();
+
+                //Enter Collection ID and Document ID
+                Response response = database.getDocument("","").execute();
                 return response;
             } catch (IOException e) {
                 e.printStackTrace();
