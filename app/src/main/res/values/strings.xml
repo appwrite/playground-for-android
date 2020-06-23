@@ -26,8 +26,9 @@
     <string name="no_data_loaded">No data loaded.</string>
 
     <!-- Strings used for appwrite configuration  -->
-    <string name="project_id">Enter Project ID </string>
-    <string name="endpoint">Enter Appwrite Endipoint</string>
-    <string name="user_email">Enter user email which you have created</string>
-    <string name="user_password">Enter user password which you have created</string>
+    <string name="project_id">Enter Project Id </string>
+    <string name="endpoint">Enter Endpoint</string>
+    <string name="collection_id">Enter Collection ID</string>
+    <string name="user_email">Enter user account email</string>
+    <string name="user_password">Enter user account password</string>
 </resources>

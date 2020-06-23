@@ -1,5 +1,7 @@
 package io.appwrite.services;
 
+import androidx.annotation.Nullable;
+
 import io.appwrite.enums.OrderType;
 import okhttp3.Call;
 import io.appwrite.Client;
@@ -25,18 +27,18 @@ public class Database  extends Service {
      * of the project documents. [Learn more about different API
      * modes](/docs/admin).
      */
-    public Call listDocuments(String collectionId, List filters, int offset, int limit, String orderField, OrderType orderType, String orderCast, String search, int first, int last) {
+    public Call listDocuments(String collectionId,  List filters, int offset,  int limit,  String orderField, OrderType orderType, String orderCast,  String search, int first, int last) {
         final String path = "/database/collections/{collectionId}/documents".replace("{collectionId}", collectionId);
         final Map<String, Object> params = new HashMap<>();
-//                params.put("filters", filters);
-//                params.put("offset", offset);
-//                params.put("limit", limit);
-//                params.put("orderField", orderField);
-//                params.put("orderType", orderType.name());
-//                params.put("orderCast", orderCast);
-//                params.put("search", search);
-//                params.put("first", first);
-//                params.put("last", last);
+                params.put("filters", filters.size() >0 ? filters:"");
+                params.put("offset", offset);
+                params.put("limit", limit);
+                params.put("orderField", orderField);
+                params.put("orderType", orderType.name());
+                params.put("orderCast", orderCast);
+                params.put("search", search);
+                params.put("first", first);
+                params.put("last", last);
 
 //        final Map<String, Object> params = Map.ofEntries(
 //                entry("filters", filters),

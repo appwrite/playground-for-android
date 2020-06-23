@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.maitretech.mydemo.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import io.appwrite.enums.OrderType;
 import io.appwrite.services.Account;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 database = new Database(client);
 
                 //Enter Collection ID and Document ID
-               Response response = database.listDocuments("5eeb1d97ba0dd",null,0,0,"", OrderType.ASC,"","",0,0)
+               Response response = database.listDocuments(getResources().getString(R.string.collection_id), new ArrayList(),0,50,"$id", OrderType.ASC,"string","",0,0)
                        .execute();
                //Response response = database.getDocument("5eeb1d97ba0dd", "5eecee3bcaec9")
                //        .execute();

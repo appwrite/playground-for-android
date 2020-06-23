@@ -17,6 +17,7 @@ This playground doesn't include any android and Appwrite best practices but rath
 * Make sure android studio is installed and that your android environment is set for running android projects.
 * You have a project created in AppWrite using console and note down the project ID.
 * Create the collection and documents under it. Assign the readable permission for both collection and documents .
+* Note the colection ID and Document ID as it will be used later.
 * Create a user in AppWrite using appwrite console and note down its email and password.  
  
 
@@ -29,7 +30,7 @@ Apart from the AppWrite classes, this playground uses two open source dependenci
 1. clone this repository.
 2. Open project in android studio.
 3. Open  app/src/main/res/values/strings.xml file.
-4. Update project_id, emdpoint, user_email, user_password with details of the user account which you have created above.  
+4. Update project_id, emdpoint, collectionID, user_email, user_password with details of the user account which you have created above.  
 5. Click Run 'app' from Run Menu to execute the project. 
 6. Press **LOGIN** button to Login and press **GET DATA!** to fetch the data
 7. Pressing **LOGOUT** button will log you out and pressing **GET DATA!** will not fetch result.
