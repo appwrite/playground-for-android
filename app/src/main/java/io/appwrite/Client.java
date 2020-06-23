@@ -1,11 +1,6 @@
 package io.appwrite;
 
 import android.content.Context;
-
-import com.franmontiel.persistentcookiejar.ClearableCookieJar;
-import com.franmontiel.persistentcookiejar.PersistentCookieJar;
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -24,13 +19,15 @@ import okhttp3.RequestBody;
 import static java.util.Map.entry;
 
 public class Client {
+
     private final OkHttpClient http;
     private final Map<String, String> headers;
     private final Map<String, String> config;
+
     private String endPoint;
     private boolean selfSigned;
     //private CookieJar cookieJar = CookieJar.NO_COOKIES;
-    private  ClearableCookieJar cookieJar ;
+    private PersistentCookieJar cookieJar ;
 
 
     public Client(Context ctx) {
@@ -47,7 +44,7 @@ public class Client {
 
         this.config = new HashMap<>();
         cookieJar =
-                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(ctx));
+                new PersistentCookieJar(ctx);
 
         this.http = http.newBuilder()
                 .cookieJar(cookieJar)
@@ -58,7 +55,7 @@ public class Client {
         return endPoint;
     }
 
-    public Map<String, String> getConfig(){
+    public   Map<String, String> getConfig(){
         return config;
     }
 

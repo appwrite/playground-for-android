@@ -24,4 +24,10 @@
     <string name="async_task_example">AsyncTask Example</string>
     <string name="loader_example">Loader Example</string>
     <string name="no_data_loaded">No data loaded.</string>
+
+    <!-- Strings used for appwrite configuration  -->
+    <string name="project_id">Enter Project ID </string>
+    <string name="endpoint">Enter Appwrite Endipoint</string>
+    <string name="user_email">Enter user email which you have created</string>
+    <string name="user_password">Enter user password which you have created</string>
 </resources>

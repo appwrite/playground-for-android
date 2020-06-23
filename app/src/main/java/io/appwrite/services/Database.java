@@ -4,10 +4,12 @@ import io.appwrite.enums.OrderType;
 import okhttp3.Call;
 import io.appwrite.Client;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.Map.entry;
+
 public class Database  extends Service {
     Client client = null;
     public Database(Client client){
@@ -25,26 +27,39 @@ public class Database  extends Service {
      */
     public Call listDocuments(String collectionId, List filters, int offset, int limit, String orderField, OrderType orderType, String orderCast, String search, int first, int last) {
         final String path = "/database/collections/{collectionId}/documents".replace("{collectionId}", collectionId);
+        final Map<String, Object> params = new HashMap<>();
+//                params.put("filters", filters);
+//                params.put("offset", offset);
+//                params.put("limit", limit);
+//                params.put("orderField", orderField);
+//                params.put("orderType", orderType.name());
+//                params.put("orderCast", orderCast);
+//                params.put("search", search);
+//                params.put("first", first);
+//                params.put("last", last);
 
-        final Map<String, Object> params = Map.ofEntries(
-                entry("filters", filters),
-                entry("offset", offset),
-                entry("limit", limit),
-                entry("orderField", orderField),
-                entry("orderType", orderType.name()),
-                entry("orderCast", orderCast),
-                entry("search", search),
-                entry("first", first),
-                entry("last", last)
-        );
+//        final Map<String, Object> params = Map.ofEntries(
+//                entry("filters", filters),
+//                entry("offset", offset),
+//                entry("limit", limit),
+//                entry("orderField", orderField),
+//                entry("orderType", orderType.name()),
+//                entry("orderCast", orderCast),
+//                entry("search", search),
+//                entry("first", first),
+//                entry("last", last)
+//        );
 
 
+        final Map<String, String> headers = new HashMap<>();
+        headers.put("content-type", "application/json");
 
-        final Map<String, String> headers = Map.ofEntries(
-                entry("content-type", "application/json")
-        );
+//        final Map<String, String> headers = Map.ofEntries(
+//                entry("content-type", "application/json")
+//        );
 
         return client.call("GET", path, headers, params);
+
     }
 
     /// Create Document

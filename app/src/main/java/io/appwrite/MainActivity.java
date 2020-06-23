@@ -14,13 +14,17 @@ import com.maitretech.mydemo.R;
 
 import java.io.IOException;
 
+import io.appwrite.enums.OrderType;
 import io.appwrite.services.Account;
 import io.appwrite.services.Database;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ProgressDialog progressDialog;
+    //AppWtire Config
+    private static final String project_id = "5eeb1d6e140e4";
+    private static final String endpoint =  "http://demo.appwrite.io/v1";
+
     private Button getDataBtn;
     private Button loginBtn;
     private TextView responseDataText;
@@ -39,16 +43,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.getting_data));
+
         getDataBtn = findViewById(R.id.get_data_btn);
         responseDataText = findViewById(R.id.response_data_text);
         loginBtn = findViewById(R.id.logIn_logOut_btn);
         loginBtn.setOnClickListener(loginBtnListener);
         getDataBtn.setOnClickListener(getDataClickListener);
         client = new Client(getApplicationContext());
-        client.setEndpoint(""); //Enter Endpoint
-        client.setProject(""); //Enter ProjectID
+        client.setEndpoint(getResources().getString(R.string.endpoint));
+        client.setProject(getResources().getString(R.string.project_id));
     }
 
     private View.OnClickListener loginBtnListener = new View.OnClickListener(){
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private class LoginTask extends AsyncTask<Void, Void, Response> {
         @Override
         protected void onPreExecute() {
-            progressDialog.show();
+
         }
 
         @Override
@@ -90,8 +93,9 @@ public class MainActivity extends AppCompatActivity {
                     if(response.code() == 401){
 
                           //Enter Email an Passowrd from which you want to login
-                          response = account.createSession("","")
-                            .execute();
+                        response = account.createSession(getResources().getString(R.string.user_email),
+                                   getResources().getString(R.string.user_password))
+                                   .execute();
                           isLogedIn  = true;
                     }
                     else{
@@ -125,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     loginBtn.setText("LogIn");
                 }
                 responseDataText.setText(responseData);
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
         }
     }
 
@@ -134,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            progressDialog.show();
         }
 
         @Override
@@ -143,7 +146,10 @@ public class MainActivity extends AppCompatActivity {
                 database = new Database(client);
 
                 //Enter Collection ID and Document ID
-                Response response = database.getDocument("","").execute();
+               Response response = database.listDocuments("5eeb1d97ba0dd",null,0,0,"", OrderType.ASC,"","",0,0)
+                       .execute();
+               //Response response = database.getDocument("5eeb1d97ba0dd", "5eecee3bcaec9")
+               //        .execute();
                 return response;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -165,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
                 responseDataText.setText(responseData);
 
 
-            progressDialog.dismiss();
         }
     }
 }
