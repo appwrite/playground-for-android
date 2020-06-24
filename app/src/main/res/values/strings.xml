@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">MyDemo</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_main">MainActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string name="get_data">Get Data!</string>
+    <string name="login">LogIn!</string>
+    <string name="getting_data">Getting data...</string>
+    <string name="error_message">There was an error!</string>
+    <string name="handler_example">Handler Example</string>
+    <string name="async_task_example">AsyncTask Example</string>
+    <string name="loader_example">Loader Example</string>
+    <string name="no_data_loaded">No data loaded.</string>
+
+    <!-- Strings used for appwrite configuration  -->
+    <string name="project_id">Enter Project Id </string>
+    <string name="endpoint">Enter Endpoint</string>
+    <string name="collection_id">Enter Collection ID</string>
+    <string name="user_email">Enter user account email</string>
+    <string name="user_password">Enter user account password</string>
+</resources>
