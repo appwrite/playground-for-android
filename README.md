@@ -7,9 +7,9 @@ Appwrite playground for Android is a simple way to explore the Appwrite API & Ap
 
 ## Get Started
 
-You can learn how to integrate your Appwrite android SDK in your android project and see how different features of the SDK can be used.
+You can learn how to integrate your appetite android SDK in your android project and see how different features of the SDK can be used. 
 
-This playground doesn't include any android and Appwrite best practices but rather intended to show the most simple examples and use cases of using the Appwrite API in your android application.
+This playground doesn't include any android and Appwrite best practices, but rather intended to show the most simple examples and use cases of using the Appwrite API in your Android application.
 
 ## System Requirements 
 * JDK 9+
@@ -37,7 +37,7 @@ Apart from the AppWrite classes, this playground uses two open source dependenci
 
 ## Contributing
 
-All code contributions - including those of people having commit access - must go through a pull request and approved by a core developer before being merged. This is to ensure proper review of all the code.
+All code contributions - including those of people having committed access - must go through a pull request and approved by a core developer before being merged. This is to ensure proper review of all the code.
 
 We truly ❤️ pull requests! If you wish to help, you can learn more about how you can contribute to this project in the [contribution guide]([CONTRIBUTING.md](https://github.com/appwrite/appwrite/blob/master/CONTRIBUTING.md)).
 
