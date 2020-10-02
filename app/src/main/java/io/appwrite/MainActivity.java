@@ -1,10 +1,14 @@
 package io.appwrite;
 
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private Account account = null;
     private Database database = null;
     private boolean isLogedIn = false;
+    private String user_mail="";
+    private String user_password="";
+    Context context;
 
     private void showErrorMessage(String msg) {
         Toast.makeText(MainActivity.this,
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context=getApplicationContext();
 
         getDataBtn = findViewById(R.id.get_data_btn);
         responseDataText = findViewById(R.id.response_data_text);
@@ -63,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     private void startLogin() {
-        new LoginTask().execute();
+        if(!isLogedIn) getCredentialsFromInputDialogueAndLogin();
+        else new LoginTask().execute();
     }
 
     private View.OnClickListener getDataClickListener = new View.OnClickListener() {
@@ -77,6 +85,42 @@ public class MainActivity extends AppCompatActivity {
 
     private void startDataRequest() {
         new GetDataTask().execute();
+    }
+    private void getCredentialsFromInputDialogueAndLogin(){
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+
+        View promptView = layoutInflater.inflate(R.layout.input_cred, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(promptView);
+
+
+        final EditText input_user_mail = promptView.findViewById(R.id.user_mail);
+        final EditText input_user_pass = promptView.findViewById(R.id.user_password);
+
+        try{
+        input_user_mail.setText(getResources().getString(R.string.user_email));
+        input_user_pass.setText(getResources().getString(R.string.user_password));
+        }
+        catch (Exception e){}
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("LOGIN", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        user_mail=input_user_mail.getText().toString();
+                        user_password=input_user_pass.getText().toString();
+                        new LoginTask().execute();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
     }
 
     private class LoginTask extends AsyncTask<Void, Void, Response> {
@@ -94,8 +138,7 @@ public class MainActivity extends AppCompatActivity {
                     if(response.code() == 401){
 
                           //Enter Email an Passowrd from which you want to login
-                        response = account.createSession(getResources().getString(R.string.user_email),
-                                   getResources().getString(R.string.user_password))
+                        response = account.createSession(user_mail,user_password)
                                    .execute();
                           isLogedIn  = true;
                     }
