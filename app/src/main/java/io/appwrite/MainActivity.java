@@ -2,12 +2,14 @@ package io.appwrite;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.maitretech.mydemo.R;
@@ -22,7 +24,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    //AppWtire Config
+    //AppWrite Config
     private static final String project_id = "5eeb1d6e140e4";
     private static final String endpoint =  "http://demo.appwrite.io/v1";
 
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 msg, Toast.LENGTH_LONG).show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.R)
         @Override
         protected Response doInBackground(Void... voids) {
             account = new Account(client);
@@ -93,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     response = account.getSessions().execute();
                     if(response.code() == 401){
 
-                          //Enter Email an Passowrd from which you want to login
+                          //Enter Email and Password from which you wish to login
                         response = account.createSession(getResources().getString(R.string.user_email),
                                    getResources().getString(R.string.user_password))
                                    .execute();

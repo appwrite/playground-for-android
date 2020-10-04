@@ -1,5 +1,9 @@
 package io.appwrite.services;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import okhttp3.Call;
 import okhttp3.HttpUrl;
 import io.appwrite.Client;
@@ -22,6 +26,7 @@ public class Storage extends Service {
      * your results. On admin mode, this endpoint will return a list of all of the
      * project files. [Learn more about different API modes](/docs/admin).
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call listFiles(String search, int limit, int offset, OrderType orderType) {
         final String path = "/storage/files";
 
@@ -47,6 +52,7 @@ public class Storage extends Service {
      * assigned to read and write access unless he has passed custom values for
      * read and write arguments.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call createFile(File file, List read, List write) {
         final String path = "/storage/files";
 
@@ -70,6 +76,7 @@ public class Storage extends Service {
      * Get file by its unique ID. This endpoint response returns a JSON object
      * with the file metadata.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call getFile(String fileId) {
         final String path = "/storage/files/{fileId}".replace("{fileId}", fileId);
 
@@ -90,6 +97,7 @@ public class Storage extends Service {
      * Update file by its unique ID. Only users with write permissions have access
      * to update this resource.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call updateFile(String fileId, List read, List write) {
         final String path = "/storage/files/{fileId}".replace("{fileId}", fileId);
 
@@ -112,6 +120,7 @@ public class Storage extends Service {
      * Delete a file by its unique ID. Only users with write permissions have
      * access to delete this resource.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call deleteFile(String fileId) {
         final String path = "/storage/files/{fileId}".replace("{fileId}", fileId);
 
@@ -133,6 +142,7 @@ public class Storage extends Service {
      * 'Content-Disposition: attachment' header that tells the browser to start
      * downloading the file to user downloads directory.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getFileDownload(String fileId) {
         final String path = "/storage/files/{fileId}/download".replace("{fileId}", fileId);
 
@@ -155,6 +165,7 @@ public class Storage extends Service {
      * and spreadsheets, will return the file icon image. You can also pass query
      * string arguments for cutting and resizing your preview image.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getFilePreview(String fileId, int width, int height, int quality, String background, String output) {
         final String path = "/storage/files/{fileId}/preview".replace("{fileId}", fileId);
 
@@ -180,6 +191,7 @@ public class Storage extends Service {
      * Get file content by its unique ID. This endpoint is similar to the download
      * method but returns with no  'Content-Disposition: attachment' header.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getFileView(String fileId, String as) {
         final String path = "/storage/files/{fileId}/view".replace("{fileId}", fileId);
 

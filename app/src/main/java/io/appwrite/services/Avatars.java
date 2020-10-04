@@ -1,6 +1,10 @@
 package io.appwrite.services;
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import okhttp3.HttpUrl;
 import io.appwrite.Client;
 
@@ -20,6 +24,7 @@ public class Avatars extends Service {
      * /account/sessions endpoint. Use width, height and quality arguments to
      * change the output settings.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getBrowser(String code, int width, int height, int quality) {
         final String path = "/avatars/browsers/{code}".replace("{code}", code);
 
@@ -45,6 +50,7 @@ public class Avatars extends Service {
      * card provider you need. Use width, height and quality arguments to change
      * the output settings.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getCreditCard(String code, int width, int height, int quality) {
         final String path = "/avatars/credit-cards/{code}".replace("{code}", code);
 
@@ -68,6 +74,7 @@ public class Avatars extends Service {
      * Use this endpoint to fetch the favorite icon (AKA favicon) of a  any remote
      * website URL.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getFavicon(String url) {
         final String path = "/avatars/favicon";
 
@@ -90,6 +97,7 @@ public class Avatars extends Service {
      * users. The code argument receives the 2 letter country code. Use width,
      * height and quality arguments to change the output settings.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getFlag(String code, int width, int height, int quality) {
         final String path = "/avatars/flags/{code}".replace("{code}", code);
 
@@ -115,6 +123,7 @@ public class Avatars extends Service {
      * remote images in your app or in case you want to make sure a 3rd party
      * image is properly served using a TLS protocol.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getImage(String url, int width, int height) {
         final String path = "/avatars/image";
 
@@ -146,6 +155,7 @@ public class Avatars extends Service {
      * the user's initials when reloading the same theme will always return for
      * the same initials.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getInitials(String name, int width, int height, String color, String background) {
         final String path = "/avatars/initials";
 
@@ -171,6 +181,7 @@ public class Avatars extends Service {
      * Converts a given plain text to a QR code image. You can use the query
      * parameters to change the size and style of the resulting image.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getQR(String text, int size, int margin, int download) {
         final String path = "/avatars/qr";
 

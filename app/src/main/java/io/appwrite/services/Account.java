@@ -3,6 +3,10 @@ package io.appwrite.services;
 
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import io.appwrite.Client;
 import okhttp3.Call;
 
@@ -20,6 +24,7 @@ public class Account extends Service {
     /*
      * Get currently logged in user data as JSON object.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call get() {
         final String path = "/account";
 
@@ -44,6 +49,7 @@ public class Account extends Service {
      * to his new account, you need to create a new [account
      * session](/docs/client/account#createSession).
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call create(String email, String password, String name) {
         final String path = "/account";
 
@@ -70,6 +76,7 @@ public class Account extends Service {
      * address. Any user-related resources like documents or storage files should
      * be deleted separately.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call delete() {
         final String path = "/account";
 
@@ -92,8 +99,10 @@ public class Account extends Service {
      * mail is sent. For security measures, user password is required to complete
      * this request.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call updateEmail(String email, String password) {
         final String path = "/account/email";
+
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("email", email),
@@ -114,6 +123,7 @@ public class Account extends Service {
      * Get currently logged in user list of latest security activity logs. Each
      * log returns user IP address, location and date and time of log.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call getLogs() {
         final String path = "/account/logs";
 
@@ -133,6 +143,7 @@ public class Account extends Service {
     /*
      * Update currently logged in user account name.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call updateName(String name) {
         final String path = "/account/name";
 
@@ -154,6 +165,7 @@ public class Account extends Service {
      * Update currently logged in user password. For validation, user is required
      * to pass the password twice.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call updatePassword(String password, String oldPassword) {
         final String path = "/account/password";
 
@@ -175,6 +187,7 @@ public class Account extends Service {
     /*
      * Get currently logged in user preferences as a key-value object.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call getPrefs() {
         final String path = "/account/prefs";
 
@@ -195,6 +208,7 @@ public class Account extends Service {
      * Update currently logged in user account preferences. You can pass only the
      * specific settings you wish to update.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call updatePrefs(Object prefs) {
         final String path = "/account/prefs";
 
@@ -220,6 +234,7 @@ public class Account extends Service {
      * request to the [PUT /account/recovery](/docs/client/account#updateRecovery)
      * endpoint to complete the process.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call createRecovery(String email, String url) {
         final String path = "/account/recovery";
 
@@ -249,6 +264,7 @@ public class Account extends Service {
      * the only valid redirect URLs are the ones from domains you have set when
      * adding your platforms in the console interface.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call updateRecovery(String userId, String secret, String password, String passwordAgain) {
         final String path = "/account/recovery";
 
@@ -273,6 +289,7 @@ public class Account extends Service {
      * Get currently logged in user list of active sessions across different
      * devices.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call getSessions() {
         final String path = "/account/sessions";
 
@@ -293,6 +310,7 @@ public class Account extends Service {
      * Allow the user to login into his account by providing a valid email and
      * password combination. This route will create a new session for the user.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call createSession(String email, String password) {
         final String path = "/account/sessions";
 
@@ -315,6 +333,7 @@ public class Account extends Service {
      * Delete all sessions from the user account and remove any sessions cookies
      * from the end client.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call deleteSessions() {
         final String path = "/account/sessions";
 
@@ -337,6 +356,7 @@ public class Account extends Service {
      * first. Use the success and failure arguments to provide a redirect URL's
      * back to your app when login is completed.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call createOAuth2Session(String provider, String success, String failure, List scopes) {
         final String path = "/account/sessions/oauth2/{provider}".replace("{provider}", provider);
 
@@ -362,6 +382,7 @@ public class Account extends Service {
      * account sessions across all his different devices. When using the option id
      * argument, only the session unique ID provider will be deleted.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call deleteSession(String sessionId) {
         final String path = "/account/sessions/{sessionId}".replace("{sessionId}", sessionId);
 
@@ -393,6 +414,7 @@ public class Account extends Service {
      * the only valid redirect URLs are the ones from domains you have set when
      * adding your platforms in the console interface.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call createVerification(String url) {
         final String path = "/account/verification";
 
@@ -416,6 +438,7 @@ public class Account extends Service {
      * to verify the user email ownership. If confirmed this route will return a
      * 200 status code.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call updateVerification(String userId, String secret) {
         final String path = "/account/verification";
 

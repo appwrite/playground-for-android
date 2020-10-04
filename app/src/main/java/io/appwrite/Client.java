@@ -1,6 +1,10 @@
 package io.appwrite;
 
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -30,10 +34,12 @@ public class Client {
     private PersistentCookieJar cookieJar ;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Client(Context ctx) {
         this("https://appwrite.io/v1", false, new OkHttpClient(),ctx);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Client(String endPoint, boolean selfSigned, OkHttpClient http, Context ctx) {
         this.endPoint = endPoint;
         this.selfSigned = selfSigned;
