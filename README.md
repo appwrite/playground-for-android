@@ -39,7 +39,7 @@ Apart from the AppWrite classes, this playground uses two open source dependenci
 
 All code contributions - including those of people having commit access - must go through a pull request and approved by a core developer before being merged. This is to ensure proper review of all the code.
 
-We truly ❤️ pull requests! If you wish to help, you can learn more about how you can contribute to this project in the [contribution guide]([CONTRIBUTING.md](https://github.com/appwrite/appwrite/blob/master/CONTRIBUTING.md)).
+We truly ❤️ pull requests! If you wish to help, you can learn more about how you can contribute to this project in the [contribution guide](https://github.com/appwrite/appwrite/blob/master/CONTRIBUTING.md).
 
 ## Security
 
