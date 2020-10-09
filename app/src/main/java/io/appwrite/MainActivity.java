@@ -22,7 +22,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    //AppWtire Config
+    //AppWrite Config
     private static final String project_id = "5eeb1d6e140e4";
     private static final String endpoint =  "http://demo.appwrite.io/v1";
 
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     response = account.getSessions().execute();
                     if(response.code() == 401){
 
-                          //Enter Email an Passowrd from which you want to login
+                          //Enter Email an Password from which you want to login
                         response = account.createSession(getResources().getString(R.string.user_email),
                                    getResources().getString(R.string.user_password))
                                    .execute();
