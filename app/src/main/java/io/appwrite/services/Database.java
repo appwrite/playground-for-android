@@ -1,6 +1,9 @@
 package io.appwrite.services;
 
+import android.os.Build;
+
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import io.appwrite.enums.OrderType;
 import okhttp3.Call;
@@ -71,6 +74,7 @@ public class Database  extends Service {
      * integration](/docs/server/database?sdk=nodejs#createCollection) API or
      * directly from your database console.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call createDocument(String collectionId, Object data, List read, List write, String parentDocument, String parentProperty, String parentPropertyType) {
         final String path = "/database/collections/{collectionId}/documents".replace("{collectionId}", collectionId);
 
@@ -97,6 +101,7 @@ public class Database  extends Service {
      * Get document by its unique ID. This endpoint response returns a JSON object
      * with the document data.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call getDocument(String collectionId, String documentId) {
         final String path = "/database/collections/{collectionId}/documents/{documentId}".replace("{collectionId}", collectionId).replace("{documentId}", documentId);
 
@@ -113,6 +118,7 @@ public class Database  extends Service {
     }
 
     /// Update Document
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call updateDocument(String collectionId, String documentId, Object data, List read, List write) {
         final String path = "/database/collections/{collectionId}/documents/{documentId}".replace("{collectionId}", collectionId).replace("{documentId}", documentId);
 
@@ -137,6 +143,7 @@ public class Database  extends Service {
      * documents, his attributes and relations to other documents. Child documents
      * **will not** be deleted.
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Call deleteDocument(String collectionId, String documentId) {
         final String path = "/database/collections/{collectionId}/documents/{documentId}".replace("{collectionId}", collectionId).replace("{documentId}", documentId);
 

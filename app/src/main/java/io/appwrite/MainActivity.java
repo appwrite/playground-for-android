@@ -2,18 +2,23 @@ package io.appwrite;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.maitretech.mydemo.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.appwrite.enums.OrderType;
 import io.appwrite.services.Account;
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 msg, Toast.LENGTH_LONG).show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.R)
         @Override
         protected Response doInBackground(Void... voids) {
             account = new Account(client);
@@ -129,7 +136,14 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     loginBtn.setText("LogIn");
                 }
-                responseDataText.setText(responseData);
+                //Committed by vaibhav-c
+                if (responseData.contains("Missing or unknown project ID")) {
+                    Toast.makeText(getApplicationContext(), "Missing or unknown project ID", Toast.LENGTH_SHORT).show();
+                } else {
+                    responseDataText.setText(responseData);
+                }
+                //End of Commit
+
                 //progressDialog.dismiss();
         }
     }
@@ -169,7 +183,13 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     showErrorMessage(e.getMessage());
                 }
-                responseDataText.setText(responseData);
+                //Committed by vaibhav-c
+                if (responseData.contains("Missing or unknown project ID")) {
+                    Toast.makeText(getApplicationContext(), "Missing or unknown project ID", Toast.LENGTH_SHORT).show();
+                } else {
+                    responseDataText.setText(responseData);
+                }
+                //End of Commit
 
 
         }

@@ -1,6 +1,13 @@
 package io.appwrite;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -30,10 +37,12 @@ public class Client {
     private PersistentCookieJar cookieJar ;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Client(Context ctx) {
         this("https://appwrite.io/v1", false, new OkHttpClient(),ctx);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public Client(String endPoint, boolean selfSigned, OkHttpClient http, Context ctx) {
         this.endPoint = endPoint;
         this.selfSigned = selfSigned;
@@ -87,6 +96,7 @@ public class Client {
 
     public Client setEndpoint(String endPoint) {
         this.endPoint = endPoint;
+        //endPoint not getting initialized
         return this;
     }
 
@@ -94,24 +104,27 @@ public class Client {
         headers.put(key, value);
         return this;
     }
-
-    public Call call(String method, String path, Map<String, String> headers, Map<String, Object> params) {
-        if(selfSigned) {
+    public Call call (String method, String path, Map < String, String > headers, Map < String, Object > params){
+        if (selfSigned) {
             // Allow self signed requests
 
         }
-
         Headers requestHeaders = Headers.of(this.headers).newBuilder()
                 .addAll(Headers.of(headers))
                 .build();
-
-        HttpUrl.Builder httpBuilder = HttpUrl.get(endPoint + path).newBuilder();
-        if("GET".equals(method)) {
+        HttpUrl.Builder httpBuilder;
+        try {
+            httpBuilder = HttpUrl.get(endPoint + path).newBuilder();
+        } catch(Exception e) {
+            httpBuilder = HttpUrl.get("https://appwrite.io/v1" + path).newBuilder();
+        }
+        if ("GET".equals(method)) {
+            HttpUrl.Builder finalHttpBuilder = httpBuilder;
             params.forEach((k, v) -> {
-                if(v instanceof List){
-                    httpBuilder.addQueryParameter(k+"[]", v.toString());
-                }else{
-                    httpBuilder.addQueryParameter(k, v.toString());
+                if (v instanceof List) {
+                    finalHttpBuilder.addQueryParameter(k + "[]", v.toString());
+                } else {
+                    finalHttpBuilder.addQueryParameter(k, v.toString());
                 }
             });
             Request request = new Request.Builder()
@@ -119,12 +132,12 @@ public class Client {
                     .headers(requestHeaders)
                     .get()
                     .build();
-
             return http.newCall(request);
+
         }
 
         RequestBody body;
-        if("multipart/form-data".equals(headers.get("content-type"))) {
+        if ("multipart/form-data".equals(headers.get("content-type"))) {
             FormBody.Builder builder = new FormBody.Builder();
             params.forEach((k, v) -> builder.add(k, v.toString()));
             body = builder.build();
@@ -142,5 +155,4 @@ public class Client {
 
         return http.newCall(request);
     }
-
 }

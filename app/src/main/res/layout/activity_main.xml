@@ -18,6 +18,7 @@
         android:layout_marginBottom="@dimen/get_data_btn_margin"
         android:clickable="true"
         android:text="@string/get_data"
+        android:background="@drawable/button_style"
         android:theme="@style/AppTheme.AccentButton" />
 
     <Button
@@ -27,6 +28,7 @@
         android:layout_marginBottom="@dimen/get_data_btn_margin"
         android:clickable="true"
         android:text="@string/login"
+        android:background="@drawable/button_style"
         android:theme="@style/AppTheme.AccentButton" />
 
     <ScrollView
