@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.appwrite.Client;
 import okhttp3.Call;
@@ -39,7 +40,7 @@ public class Account extends Service {
     /*
      * Use this endpoint to allow a new user to register a new account in your
      * project. After the user registration completes successfully, you can use
-     * the [/account/verfication](/docs/client/account#createVerification) route
+     * the [/account/verification](/docs/client/account#createVerification) route
      * to start verifying the user email address. To allow your new user to login
      * to his new account, you need to create a new [account
      * session](/docs/client/account#createSession).
@@ -338,14 +339,14 @@ public class Account extends Service {
      * back to your app when login is completed.
      */
     @SuppressLint("NewApi")
-    public Call createOAuth2Session(String provider, String success, String failure, List scopes) {
+    public Call createOAuth2Session(String provider, String success, String failure, List<Object> scopes) {
         final String path = "/account/sessions/oauth2/{provider}".replace("{provider}", provider);
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("success", success),
                 entry("failure", failure),
                 entry("scopes", scopes),
-                entry("project", client.getConfig().get("project"))
+                entry("project", Objects.requireNonNull(client.getConfig().get("project")))
         );
 
 

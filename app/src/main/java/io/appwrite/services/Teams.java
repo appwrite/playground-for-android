@@ -51,14 +51,13 @@ public class Teams extends Service {
      * project.
      */
     @SuppressLint("NewApi")
-    public Call create(String name, List roles) {
+    public Call create(String name, List<Object> roles) {
         final String path = "/teams";
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("name", name),
                 entry("roles", roles)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -174,7 +173,7 @@ public class Teams extends Service {
      * added your platforms in the console interface.
      */
     @SuppressLint("NewApi")
-    public Call createMembership(String teamId, String email, List roles, String url, String name) {
+    public Call createMembership(String teamId, String email, List<Object> roles, String url, String name) {
         final String path = "/teams/{teamId}/memberships".replace("{teamId}", teamId);
 
         final Map<String, Object> params = Map.ofEntries(

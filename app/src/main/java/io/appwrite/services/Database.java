@@ -13,7 +13,7 @@ import okhttp3.Call;
 import static java.util.Map.entry;
 
 public class Database  extends Service {
-    Client client = null;
+    Client client;
     public Database(Client client){
         super(client);
         this.client = client;
@@ -28,7 +28,7 @@ public class Database  extends Service {
      * modes](/docs/admin).
      */
     @SuppressLint("NewApi")
-    public Call listDocuments(String collectionId, List filters, int offset, int limit, String orderField, OrderType orderType, String orderCast, String search, int first, int last) {
+    public Call listDocuments(String collectionId, List<Object> filters, int offset, int limit, String orderField, OrderType orderType, String orderCast, String search, int first, int last) {
         final String path = "/database/collections/{collectionId}/documents".replace("{collectionId}", collectionId);
         final Map<String, Object> params = new HashMap<>();
         params.put("filters", filters.size() > 0 ? filters : "");
@@ -38,8 +38,8 @@ public class Database  extends Service {
         params.put("orderType", orderType.name());
         params.put("orderCast", orderCast);
         params.put("search", search);
-                params.put("first", first);
-                params.put("last", last);
+        params.put("first", first);
+        params.put("last", last);
 
 //        final Map<String, Object> params = Map.ofEntries(
 //                entry("filters", filters),
@@ -73,7 +73,7 @@ public class Database  extends Service {
      * directly from your database console.
      */
     @SuppressLint("NewApi")
-    public Call createDocument(String collectionId, Object data, List read, List write, String parentDocument, String parentProperty, String parentPropertyType) {
+    public Call createDocument(String collectionId, Object data, List<Object> read, List<Object> write, String parentDocument, String parentProperty, String parentPropertyType) {
         final String path = "/database/collections/{collectionId}/documents".replace("{collectionId}", collectionId);
 
         final Map<String, Object> params = Map.ofEntries(
@@ -115,7 +115,8 @@ public class Database  extends Service {
     }
 
     /// Update Document
-    public Call updateDocument(String collectionId, String documentId, Object data, List read, List write) {
+    @SuppressLint("NewApi")
+    public Call updateDocument(String collectionId, String documentId, Object data, List<Object> read, List<Object> write) {
         final String path = "/database/collections/{collectionId}/documents/{documentId}".replace("{collectionId}", collectionId).replace("{documentId}", documentId);
 
         final Map<String, Object> params = Map.ofEntries(

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.appwrite.Client;
 import io.appwrite.enums.OrderType;
@@ -51,7 +52,7 @@ public class Storage extends Service {
      * read and write arguments.
      */
     @SuppressLint("NewApi")
-    public Call createFile(File file, List read, List write) {
+    public Call createFile(File file, List<Object> read, List<Object> write) {
         final String path = "/storage/files";
 
         final Map<String, Object> params = Map.ofEntries(
@@ -96,14 +97,13 @@ public class Storage extends Service {
      * to update this resource.
      */
     @SuppressLint("NewApi")
-    public Call updateFile(String fileId, List read, List write) {
+    public Call updateFile(String fileId, List<Object> read, List<Object> write) {
         final String path = "/storage/files/{fileId}".replace("{fileId}", fileId);
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("read", read),
                 entry("write", write)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -145,14 +145,17 @@ public class Storage extends Service {
         final String path = "/storage/files/{fileId}/download".replace("{fileId}", fileId);
 
         final Map<String, Object> params = Map.ofEntries(
-                entry("project", client.getConfig().get("project"))
+                entry("project", Objects.requireNonNull(client.getConfig().get("project")))
         );
 
 
-
         HttpUrl.Builder httpBuilder = new HttpUrl.Builder().build().newBuilder(client.getEndPoint() + path);
-        params.forEach((k, v) -> httpBuilder.addQueryParameter(k, v.toString()));
+        params.forEach((k, v) -> {
+            assert httpBuilder != null;
+            httpBuilder.addQueryParameter(k, v.toString());
+        });
 
+        assert httpBuilder != null;
         return httpBuilder.build().toString();
     }
 
@@ -173,14 +176,17 @@ public class Storage extends Service {
                 entry("quality", quality),
                 entry("background", background),
                 entry("output", output),
-                entry("project", client.getConfig().get("project"))
+                entry("project", Objects.requireNonNull(client.getConfig().get("project")))
         );
 
 
-
         HttpUrl.Builder httpBuilder = new HttpUrl.Builder().build().newBuilder(client.getEndPoint() + path);
-        params.forEach((k, v) -> httpBuilder.addQueryParameter(k, v.toString()));
+        params.forEach((k, v) -> {
+            assert httpBuilder != null;
+            httpBuilder.addQueryParameter(k, v.toString());
+        });
 
+        assert httpBuilder != null;
         return httpBuilder.build().toString();
     }
 
@@ -195,14 +201,17 @@ public class Storage extends Service {
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("as", as),
-                entry("project", client.getConfig().get("project"))
+                entry("project", Objects.requireNonNull(client.getConfig().get("project")))
         );
 
 
-
         HttpUrl.Builder httpBuilder = new HttpUrl.Builder().build().newBuilder(client.getEndPoint() + path);
-        params.forEach((k, v) -> httpBuilder.addQueryParameter(k, v.toString()));
+        params.forEach((k, v) -> {
+            assert httpBuilder != null;
+            httpBuilder.addQueryParameter(k, v.toString());
+        });
 
+        assert httpBuilder != null;
         return httpBuilder.build().toString();
     }
 }
