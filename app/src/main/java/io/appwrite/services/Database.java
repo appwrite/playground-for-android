@@ -1,14 +1,14 @@
 package io.appwrite.services;
 
-import androidx.annotation.Nullable;
-
-import io.appwrite.enums.OrderType;
-import okhttp3.Call;
-import io.appwrite.Client;
+import android.annotation.SuppressLint;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.appwrite.Client;
+import io.appwrite.enums.OrderType;
+import okhttp3.Call;
 
 import static java.util.Map.entry;
 
@@ -27,16 +27,17 @@ public class Database  extends Service {
      * of the project documents. [Learn more about different API
      * modes](/docs/admin).
      */
-    public Call listDocuments(String collectionId,  List filters, int offset,  int limit,  String orderField, OrderType orderType, String orderCast,  String search, int first, int last) {
+    @SuppressLint("NewApi")
+    public Call listDocuments(String collectionId, List filters, int offset, int limit, String orderField, OrderType orderType, String orderCast, String search, int first, int last) {
         final String path = "/database/collections/{collectionId}/documents".replace("{collectionId}", collectionId);
         final Map<String, Object> params = new HashMap<>();
-                params.put("filters", filters.size() >0 ? filters:"");
-                params.put("offset", offset);
-                params.put("limit", limit);
-                params.put("orderField", orderField);
-                params.put("orderType", orderType.name());
-                params.put("orderCast", orderCast);
-                params.put("search", search);
+        params.put("filters", filters.size() > 0 ? filters : "");
+        params.put("offset", offset);
+        params.put("limit", limit);
+        params.put("orderField", orderField);
+        params.put("orderType", orderType.name());
+        params.put("orderCast", orderCast);
+        params.put("search", search);
                 params.put("first", first);
                 params.put("last", last);
 
@@ -71,6 +72,7 @@ public class Database  extends Service {
      * integration](/docs/server/database?sdk=nodejs#createCollection) API or
      * directly from your database console.
      */
+    @SuppressLint("NewApi")
     public Call createDocument(String collectionId, Object data, List read, List write, String parentDocument, String parentProperty, String parentPropertyType) {
         final String path = "/database/collections/{collectionId}/documents".replace("{collectionId}", collectionId);
 
@@ -97,12 +99,12 @@ public class Database  extends Service {
      * Get document by its unique ID. This endpoint response returns a JSON object
      * with the document data.
      */
+    @SuppressLint("NewApi")
     public Call getDocument(String collectionId, String documentId) {
         final String path = "/database/collections/{collectionId}/documents/{documentId}".replace("{collectionId}", collectionId).replace("{documentId}", documentId);
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -137,12 +139,12 @@ public class Database  extends Service {
      * documents, his attributes and relations to other documents. Child documents
      * **will not** be deleted.
      */
+    @SuppressLint("NewApi")
     public Call deleteDocument(String collectionId, String documentId) {
         final String path = "/database/collections/{collectionId}/documents/{documentId}".replace("{collectionId}", collectionId).replace("{documentId}", documentId);
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(

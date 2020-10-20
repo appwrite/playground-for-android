@@ -1,6 +1,5 @@
 package io.appwrite;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -44,15 +43,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         getDataBtn = findViewById(R.id.get_data_btn);
         responseDataText = findViewById(R.id.response_data_text);
         loginBtn = findViewById(R.id.logIn_logOut_btn);
-        loginBtn.setOnClickListener(loginBtnListener);
-        getDataBtn.setOnClickListener(getDataClickListener);
-        client = new Client(getApplicationContext());
-        client.setEndpoint(getResources().getString(R.string.endpoint));
-        client.setProject(getResources().getString(R.string.project_id));
+
+
+        if (!getResources().getString(R.string.project_id).equals("Enter Project Id ") && !getResources().getString(R.string.endpoint).equals("Enter Endpoint")) {
+            loginBtn.setOnClickListener(loginBtnListener);
+            getDataBtn.setOnClickListener(getDataClickListener);
+            client = new Client(getApplicationContext());
+            client.setEndpoint(getResources().getString(R.string.endpoint));
+            client.setProject(getResources().getString(R.string.project_id));
+        } else {
+            Toast.makeText(this, "Please Update EndPoint and Project_ID!!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private View.OnClickListener loginBtnListener = new View.OnClickListener(){
