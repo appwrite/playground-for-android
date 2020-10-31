@@ -1,6 +1,5 @@
 package io.appwrite;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.maitretech.mydemo.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import io.appwrite.enums.OrderType;
 import io.appwrite.services.Account;
@@ -39,41 +39,54 @@ public class MainActivity extends AppCompatActivity {
                 msg, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-
-        getDataBtn = findViewById(R.id.get_data_btn);
-        responseDataText = findViewById(R.id.response_data_text);
-        loginBtn = findViewById(R.id.logIn_logOut_btn);
-        loginBtn.setOnClickListener(loginBtnListener);
-        getDataBtn.setOnClickListener(getDataClickListener);
-        client = new Client(getApplicationContext());
-        client.setEndpoint(getResources().getString(R.string.endpoint));
-        client.setProject(getResources().getString(R.string.project_id));
-    }
-
     private View.OnClickListener loginBtnListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             responseDataText.setText(getString(R.string.no_data_loaded));
-            startLogin();
+            if (!getResources().getString(R.string.project_id).equals("Enter Project Id ") && !getResources().getString(R.string.endpoint).equals("Enter Endpoint")) {
+                startLogin();
+            } else {
+                Toast.makeText(MainActivity.this, "Please Update EndPoint and Project_ID!!", Toast.LENGTH_SHORT).show();
+            }
+
+
         }
     };
-    private void startLogin() {
-        new LoginTask().execute();
-    }
-
     private View.OnClickListener getDataClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
             responseDataText.setText(getString(R.string.no_data_loaded));
-            startDataRequest();
+            if (!getResources().getString(R.string.project_id).equals("Enter Project Id ") && !getResources().getString(R.string.endpoint).equals("Enter Endpoint")) {
+                startDataRequest();
+            } else {
+                Toast.makeText(MainActivity.this, "Please Update EndPoint and Project_ID!!", Toast.LENGTH_SHORT).show();
+            }
+
         }
     };
+
+    private void startLogin() {
+        new LoginTask().execute();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        getDataBtn = findViewById(R.id.get_data_btn);
+        responseDataText = findViewById(R.id.response_data_text);
+        loginBtn = findViewById(R.id.logIn_logOut_btn);
+
+        loginBtn.setOnClickListener(loginBtnListener);
+        getDataBtn.setOnClickListener(getDataClickListener);
+        client = new Client(getApplicationContext());
+        client.setEndpoint(getResources().getString(R.string.endpoint));
+        client.setProject(getResources().getString(R.string.project_id));
+
+
+    }
 
     private void startDataRequest() {
         new GetDataTask().execute();
@@ -118,16 +131,16 @@ public class MainActivity extends AppCompatActivity {
 
             String responseData = null;
             try {
-                responseData = response.body().string();
+                responseData = Objects.requireNonNull(response.body()).string();
 
             } catch (Exception e) {
                 showErrorMessage(e.getMessage());
             }
                 if(isLogedIn){
-                    loginBtn.setText("LogOut");
+                    loginBtn.setText(getResources().getString(R.string.LogOut));
                 }
                 else {
-                    loginBtn.setText("LogIn");
+                    loginBtn.setText(getResources().getString(R.string.LogIn));
                 }
                 responseDataText.setText(responseData);
                 //progressDialog.dismiss();
@@ -143,15 +156,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Response doInBackground(Void... params) {
-           try {
+            try {
                 database = new Database(client);
 
                 //Enter Collection ID and Document ID
-               Response response = database.listDocuments(getResources().getString(R.string.collection_id), new ArrayList(),0,50,"$id", OrderType.ASC,"string","",0,0)
-                       .execute();
-               //Response response = database.getDocument("5eeb1d97ba0dd", "5eecee3bcaec9")
-               //        .execute();
-                return response;
+                //Response response = database.getDocument("5eeb1d97ba0dd", "5eecee3bcaec9")
+                //        .execute();
+                return database.listDocuments(getResources().getString(R.string.collection_id), new ArrayList<>(), 0, 50, "$id", OrderType.ASC, "string", "", 0, 0)
+                        .execute();
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;

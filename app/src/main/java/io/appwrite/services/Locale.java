@@ -1,9 +1,11 @@
 package io.appwrite.services;
 
-import okhttp3.Call;
-import io.appwrite.Client;
+import android.annotation.SuppressLint;
 
 import java.util.Map;
+
+import io.appwrite.Client;
+import okhttp3.Call;
 
 import static java.util.Map.entry;
 
@@ -21,6 +23,7 @@ public class Locale extends Service {
      *
      * ([IP Geolocation by DB-IP](https://db-ip.com))
      */
+    @SuppressLint("NewApi")
     public Call get() {
         final String path = "/locale";
 
@@ -41,6 +44,7 @@ public class Locale extends Service {
      * List of all continents. You can use the locale header to get the data in a
      * supported language.
      */
+    @SuppressLint("NewApi")
     public Call getContinents() {
         final String path = "/locale/continents";
 
@@ -61,12 +65,12 @@ public class Locale extends Service {
      * List of all countries. You can use the locale header to get the data in a
      * supported language.
      */
+    @SuppressLint("NewApi")
     public Call getCountries() {
         final String path = "/locale/countries";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -81,12 +85,12 @@ public class Locale extends Service {
      * List of all countries that are currently members of the EU. You can use the
      * locale header to get the data in a supported language.
      */
+    @SuppressLint("NewApi")
     public Call getCountriesEU() {
         final String path = "/locale/countries/eu";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -101,12 +105,12 @@ public class Locale extends Service {
      * List of all countries phone codes. You can use the locale header to get the
      * data in a supported language.
      */
+    @SuppressLint("NewApi")
     public Call getCountriesPhones() {
         final String path = "/locale/countries/phones";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -122,12 +126,12 @@ public class Locale extends Service {
      * decimal digits for all major and minor currencies. You can use the locale
      * header to get the data in a supported language.
      */
+    @SuppressLint("NewApi")
     public Call getCurrencies() {
         final String path = "/locale/currencies";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -142,12 +146,12 @@ public class Locale extends Service {
      * List of all languages classified by ISO 639-1 including 2-letter code, name
      * in English, and name in the respective language.
      */
+    @SuppressLint("NewApi")
     public Call getLanguages() {
         final String path = "/locale/languages";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(

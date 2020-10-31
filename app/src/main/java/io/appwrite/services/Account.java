@@ -1,18 +1,19 @@
 package io.appwrite.services;
 
 
+import android.annotation.SuppressLint;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import io.appwrite.Client;
 import okhttp3.Call;
 
-import java.util.List;
-import java.util.Map;
-
 import static java.util.Map.entry;
 
 public class Account extends Service {
-    public Account(Client client){
+    public Account(Client client) {
         super(client);
     }
 
@@ -20,12 +21,12 @@ public class Account extends Service {
     /*
      * Get currently logged in user data as JSON object.
      */
+    @SuppressLint("NewApi")
     public Call get() {
         final String path = "/account";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -39,11 +40,12 @@ public class Account extends Service {
     /*
      * Use this endpoint to allow a new user to register a new account in your
      * project. After the user registration completes successfully, you can use
-     * the [/account/verfication](/docs/client/account#createVerification) route
+     * the [/account/verification](/docs/client/account#createVerification) route
      * to start verifying the user email address. To allow your new user to login
      * to his new account, you need to create a new [account
      * session](/docs/client/account#createSession).
      */
+    @SuppressLint("NewApi")
     public Call create(String email, String password, String name) {
         final String path = "/account";
 
@@ -52,7 +54,6 @@ public class Account extends Service {
                 entry("password", password),
                 entry("name", name)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -70,12 +71,12 @@ public class Account extends Service {
      * address. Any user-related resources like documents or storage files should
      * be deleted separately.
      */
+    @SuppressLint("NewApi")
     public Call delete() {
         final String path = "/account";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -92,6 +93,7 @@ public class Account extends Service {
      * mail is sent. For security measures, user password is required to complete
      * this request.
      */
+    @SuppressLint("NewApi")
     public Call updateEmail(String email, String password) {
         final String path = "/account/email";
 
@@ -99,7 +101,6 @@ public class Account extends Service {
                 entry("email", email),
                 entry("password", password)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -114,12 +115,12 @@ public class Account extends Service {
      * Get currently logged in user list of latest security activity logs. Each
      * log returns user IP address, location and date and time of log.
      */
+    @SuppressLint("NewApi")
     public Call getLogs() {
         final String path = "/account/logs";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -133,13 +134,13 @@ public class Account extends Service {
     /*
      * Update currently logged in user account name.
      */
+    @SuppressLint("NewApi")
     public Call updateName(String name) {
         final String path = "/account/name";
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("name", name)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -154,6 +155,7 @@ public class Account extends Service {
      * Update currently logged in user password. For validation, user is required
      * to pass the password twice.
      */
+    @SuppressLint("NewApi")
     public Call updatePassword(String password, String oldPassword) {
         final String path = "/account/password";
 
@@ -161,7 +163,6 @@ public class Account extends Service {
                 entry("password", password),
                 entry("oldPassword", oldPassword)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -175,12 +176,12 @@ public class Account extends Service {
     /*
      * Get currently logged in user preferences as a key-value object.
      */
+    @SuppressLint("NewApi")
     public Call getPrefs() {
         final String path = "/account/prefs";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -195,13 +196,13 @@ public class Account extends Service {
      * Update currently logged in user account preferences. You can pass only the
      * specific settings you wish to update.
      */
+    @SuppressLint("NewApi")
     public Call updatePrefs(Object prefs) {
         final String path = "/account/prefs";
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("prefs", prefs)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -220,6 +221,7 @@ public class Account extends Service {
      * request to the [PUT /account/recovery](/docs/client/account#updateRecovery)
      * endpoint to complete the process.
      */
+    @SuppressLint("NewApi")
     public Call createRecovery(String email, String url) {
         final String path = "/account/recovery";
 
@@ -227,7 +229,6 @@ public class Account extends Service {
                 entry("email", email),
                 entry("url", url)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -249,6 +250,7 @@ public class Account extends Service {
      * the only valid redirect URLs are the ones from domains you have set when
      * adding your platforms in the console interface.
      */
+    @SuppressLint("NewApi")
     public Call updateRecovery(String userId, String secret, String password, String passwordAgain) {
         final String path = "/account/recovery";
 
@@ -258,7 +260,6 @@ public class Account extends Service {
                 entry("password", password),
                 entry("passwordAgain", passwordAgain)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -273,12 +274,12 @@ public class Account extends Service {
      * Get currently logged in user list of active sessions across different
      * devices.
      */
+    @SuppressLint("NewApi")
     public Call getSessions() {
         final String path = "/account/sessions";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -293,6 +294,7 @@ public class Account extends Service {
      * Allow the user to login into his account by providing a valid email and
      * password combination. This route will create a new session for the user.
      */
+    @SuppressLint("NewApi")
     public Call createSession(String email, String password) {
         final String path = "/account/sessions";
 
@@ -300,7 +302,6 @@ public class Account extends Service {
                 entry("email", email),
                 entry("password", password)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -315,12 +316,12 @@ public class Account extends Service {
      * Delete all sessions from the user account and remove any sessions cookies
      * from the end client.
      */
+    @SuppressLint("NewApi")
     public Call deleteSessions() {
         final String path = "/account/sessions";
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -337,16 +338,16 @@ public class Account extends Service {
      * first. Use the success and failure arguments to provide a redirect URL's
      * back to your app when login is completed.
      */
-    public Call createOAuth2Session(String provider, String success, String failure, List scopes) {
+    @SuppressLint("NewApi")
+    public Call createOAuth2Session(String provider, String success, String failure, List<Object> scopes) {
         final String path = "/account/sessions/oauth2/{provider}".replace("{provider}", provider);
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("success", success),
                 entry("failure", failure),
                 entry("scopes", scopes),
-                entry("project", client.getConfig().get("project"))
+                entry("project", Objects.requireNonNull(client.getConfig().get("project")))
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -362,12 +363,12 @@ public class Account extends Service {
      * account sessions across all his different devices. When using the option id
      * argument, only the session unique ID provider will be deleted.
      */
+    @SuppressLint("NewApi")
     public Call deleteSession(String sessionId) {
         final String path = "/account/sessions/{sessionId}".replace("{sessionId}", sessionId);
 
         final Map<String, Object> params = Map.ofEntries(
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -393,13 +394,13 @@ public class Account extends Service {
      * the only valid redirect URLs are the ones from domains you have set when
      * adding your platforms in the console interface.
      */
+    @SuppressLint("NewApi")
     public Call createVerification(String url) {
         final String path = "/account/verification";
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("url", url)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -416,6 +417,7 @@ public class Account extends Service {
      * to verify the user email ownership. If confirmed this route will return a
      * 200 status code.
      */
+    @SuppressLint("NewApi")
     public Call updateVerification(String userId, String secret) {
         final String path = "/account/verification";
 
@@ -423,7 +425,6 @@ public class Account extends Service {
                 entry("userId", userId),
                 entry("secret", secret)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(

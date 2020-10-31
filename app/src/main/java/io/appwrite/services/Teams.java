@@ -1,12 +1,14 @@
 package io.appwrite.services;
 
 
-import io.appwrite.enums.OrderType;
-import okhttp3.Call;
-import io.appwrite.Client;
+import android.annotation.SuppressLint;
 
 import java.util.List;
 import java.util.Map;
+
+import io.appwrite.Client;
+import io.appwrite.enums.OrderType;
+import okhttp3.Call;
 
 import static java.util.Map.entry;
 
@@ -21,6 +23,7 @@ public class Teams extends Service {
      * filter your results. On admin mode, this endpoint will return a list of all
      * of the project teams. [Learn more about different API modes](/docs/admin).
      */
+    @SuppressLint("NewApi")
     public Call list(String search, int limit, int offset, OrderType orderType) {
         final String path = "/teams";
 
@@ -47,14 +50,14 @@ public class Teams extends Service {
      * who will be able add new owners and update or delete the team from your
      * project.
      */
-    public Call create(String name, List roles) {
+    @SuppressLint("NewApi")
+    public Call create(String name, List<Object> roles) {
         final String path = "/teams";
 
         final Map<String, Object> params = Map.ofEntries(
                 entry("name", name),
                 entry("roles", roles)
         );
-
 
 
         final Map<String, String> headers = Map.ofEntries(
@@ -69,6 +72,7 @@ public class Teams extends Service {
      * Get team by its unique ID. All team members have read access for this
      * resource.
      */
+    @SuppressLint("NewApi")
     public Call get(String teamId) {
         final String path = "/teams/{teamId}".replace("{teamId}", teamId);
 
@@ -89,6 +93,7 @@ public class Teams extends Service {
      * Update team by its unique ID. Only team owners have write access for this
      * resource.
      */
+    @SuppressLint("NewApi")
     public Call update(String teamId, String name) {
         final String path = "/teams/{teamId}".replace("{teamId}", teamId);
 
@@ -110,6 +115,7 @@ public class Teams extends Service {
      * Delete team by its unique ID. Only team owners have write access for this
      * resource.
      */
+    @SuppressLint("NewApi")
     public Call delete(String teamId) {
         final String path = "/teams/{teamId}".replace("{teamId}", teamId);
 
@@ -130,6 +136,7 @@ public class Teams extends Service {
      * Get team members by the team unique ID. All team members have read access
      * for this list of resources.
      */
+    @SuppressLint("NewApi")
     public Call getMemberships(String teamId, String search, int limit, int offset, OrderType orderType) {
         final String path = "/teams/{teamId}/memberships".replace("{teamId}", teamId);
 
@@ -165,7 +172,8 @@ public class Teams extends Service {
      * the only valid redirect URL's are the once from domains you have set when
      * added your platforms in the console interface.
      */
-    public Call createMembership(String teamId, String email, List roles, String url, String name) {
+    @SuppressLint("NewApi")
+    public Call createMembership(String teamId, String email, List<Object> roles, String url, String name) {
         final String path = "/teams/{teamId}/memberships".replace("{teamId}", teamId);
 
         final Map<String, Object> params = Map.ofEntries(
@@ -190,6 +198,7 @@ public class Teams extends Service {
      * the membership of any other team member. You can also use this endpoint to
      * delete a user membership even if he didn't accept it.
      */
+    @SuppressLint("NewApi")
     public Call deleteMembership(String teamId, String inviteId) {
         final String path = "/teams/{teamId}/memberships/{inviteId}".replace("{teamId}", teamId).replace("{inviteId}", inviteId);
 
@@ -211,6 +220,7 @@ public class Teams extends Service {
      * after he is being redirected back to your app from the invitation email he
      * was sent.
      */
+    @SuppressLint("NewApi")
     public Call updateMembershipStatus(String teamId, String inviteId, String userId, String secret) {
         final String path = "/teams/{teamId}/memberships/{inviteId}/status".replace("{teamId}", teamId).replace("{inviteId}", inviteId);
 

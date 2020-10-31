@@ -1,6 +1,9 @@
 package io.appwrite;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -27,13 +30,14 @@ public class Client {
     private String endPoint;
     private boolean selfSigned;
     //private CookieJar cookieJar = CookieJar.NO_COOKIES;
-    private PersistentCookieJar cookieJar ;
+    private PersistentCookieJar cookieJar;
 
 
     public Client(Context ctx) {
-        this("https://appwrite.io/v1", false, new OkHttpClient(),ctx);
+        this("https://appwrite.io/v1", false, new OkHttpClient(), ctx);
     }
 
+    @SuppressLint("NewApi")
     public Client(String endPoint, boolean selfSigned, OkHttpClient http, Context ctx) {
         this.endPoint = endPoint;
         this.selfSigned = selfSigned;
@@ -51,11 +55,11 @@ public class Client {
                 .build();
     }
 
-    public String getEndPoint(){
+    public String getEndPoint() {
         return endPoint;
     }
 
-    public   Map<String, String> getConfig(){
+    public Map<String, String> getConfig() {
         return config;
     }
 
@@ -96,7 +100,7 @@ public class Client {
     }
 
     public Call call(String method, String path, Map<String, String> headers, Map<String, Object> params) {
-        if(selfSigned) {
+        if (selfSigned) {
             // Allow self signed requests
 
         }
@@ -106,11 +110,12 @@ public class Client {
                 .build();
 
         HttpUrl.Builder httpBuilder = HttpUrl.get(endPoint + path).newBuilder();
-        if("GET".equals(method)) {
+        Log.d("endpoint", endPoint);
+        if ("GET".equals(method)) {
             params.forEach((k, v) -> {
-                if(v instanceof List){
-                    httpBuilder.addQueryParameter(k+"[]", v.toString());
-                }else{
+                if (v instanceof List) {
+                    httpBuilder.addQueryParameter(k + "[]", v.toString());
+                } else {
                     httpBuilder.addQueryParameter(k, v.toString());
                 }
             });
@@ -124,7 +129,7 @@ public class Client {
         }
 
         RequestBody body;
-        if("multipart/form-data".equals(headers.get("content-type"))) {
+        if ("multipart/form-data".equals(headers.get("content-type"))) {
             FormBody.Builder builder = new FormBody.Builder();
             params.forEach((k, v) -> builder.add(k, v.toString()));
             body = builder.build();
