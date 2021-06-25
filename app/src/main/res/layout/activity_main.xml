@@ -1,59 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_centerInParent="true"
-    android:layout_gravity="center"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="io.appwrite.MainActivity">
+    tools:context="io.appwrite.playgroundforandroid.MainActivity">
 
     <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/logIn_logOut_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/get_data_btn_margin"
-            android:text="@string/login"
-            android:theme="@style/AppTheme.AccentButton" />
-
-        <Button
-            android:id="@+id/get_data_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/get_data_btn_margin"
-            android:text="@string/get_data"
-
-            android:theme="@style/AppTheme.AccentButton" />
-
-    </LinearLayout>
-    <ScrollView
-        android:layout_below="@id/buttons"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/loginWithEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:text="Login with Email"
+            app:backgroundTint="#6C6A6A" />
 
-            <TextView
-                android:id="@+id/response_data_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/response_data_text_size"
-                android:text="@string/no_data_loaded"/>
-        </LinearLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/createDoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Doc"
+            app:backgroundTint="#E34A4A" />
 
-</RelativeLayout>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <Button
+            android:id="@+id/loginWithFacebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login with Facebook"
+            app:backgroundTint="#3F67E3" />
+
+        <Button
+            android:id="@+id/loginWithGithub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login with Github"
+            app:backgroundTint="#0C0B0B" />
+
+        <Button
+            android:id="@+id/loginWithGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login With Google"
+            app:backgroundTint="#B81B1B" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
+
+        <Button
+            android:id="@+id/uploadFile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload File"
+            app:backgroundTint="#B81B1B" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
