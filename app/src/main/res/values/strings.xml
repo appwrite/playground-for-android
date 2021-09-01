@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Playground For Android</string>
+    <string name="subscribed">Subscribed to realtime! Try adding a document.</string>
 </resources>

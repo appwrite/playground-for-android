@@ -3,35 +3,41 @@ package io.appwrite.playgroundforandroid
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import io.appwrite.playgroundforandroid.R
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var viewModel: PlaygroundViewModel
+    private var output: TextView? = null
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        viewModel.uploadFile(uri, this)
-    }
-
-    private val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        permissions.entries.forEach {
-            Log.d("DEBUG", "${it.key} = ${it.value}")
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            viewModel.uploadFile(uri, this)
         }
-    }
+
+    private val requestPermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            permissions.entries.forEach {
+                Log.d("DEBUG", "${it.key} = ${it.value}")
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this).get(PlaygroundViewModel::class.java)
         viewModel.create(this)
+
+        output = findViewById(R.id.textView)
 
         findViewById<Button>(R.id.loginWithEmail).setOnClickListener { view ->
             viewModel.onLogin(this)
@@ -40,13 +46,17 @@ class MainActivity : AppCompatActivity() {
             viewModel.createDoc(this)
         }
         findViewById<Button>(R.id.loginWithFacebook).setOnClickListener { view ->
-            viewModel.onLoginOauth(this,"facebook",this)
+            viewModel.onLoginOauth(this, "facebook", this)
         }
         findViewById<Button>(R.id.loginWithGithub).setOnClickListener { view ->
-            viewModel.onLoginOauth(this,"github",this)
+            viewModel.onLoginOauth(this, "github", this)
         }
         findViewById<Button>(R.id.loginWithGoogle).setOnClickListener { view ->
-            viewModel.onLoginOauth(this,"google",this)
+            viewModel.onLoginOauth(this, "google", this)
+        }
+        findViewById<Button>(R.id.subscribeButton).setOnClickListener { view ->
+            viewModel.subscribe()
+            Toast.makeText(this, R.string.subscribed, Toast.LENGTH_SHORT).show()
         }
         findViewById<Button>(R.id.logoutButton).setOnClickListener { view ->
             viewModel.onLogout(this)
@@ -60,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED  -> {
+                ) == PackageManager.PERMISSION_GRANTED -> {
                     getContent.launch("image/*")
                 }
                 else -> {
@@ -74,12 +84,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.user.observe(this, Observer {
-            user ->
-            if(user!=null)
-                findViewById<TextView>(R.id.textView).text = user["name"].toString()
-            else
-                findViewById<TextView>(R.id.textView).text = "Anonymous"
-        } )
+        viewModel.user.observe(this) { user ->
+            if (user != null) {
+                output?.text = user["name"].toString()
+            } else {
+                output?.text = "Anonymous"
+            }
+        }
+        viewModel.items.observe(this) {
+            Snackbar.make(window.decorView, "REALTIME EVENT: $it", Snackbar.LENGTH_LONG).show()
+        }
     }
 }
