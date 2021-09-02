@@ -71,6 +71,12 @@
             android:text="Upload File"
             app:backgroundTint="#B81B1B" />
 
+        <Button
+            android:id="@+id/subscribeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subscribe to realtime" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="32dp" />

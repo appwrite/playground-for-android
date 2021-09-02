@@ -13,8 +13,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.appwrite.Client
 import io.appwrite.exceptions.AppwriteException
+import io.appwrite.extensions.toJson
 import io.appwrite.services.Account
 import io.appwrite.services.Database
+import io.appwrite.services.Realtime
 import io.appwrite.services.Storage
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -23,19 +25,27 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 class PlaygroundViewModel : ViewModel() {
+
     private val collectionId = "608faab562521"
-    private lateinit var client : Client
-    private lateinit var account : Account
-    private lateinit var db : Database
-    private lateinit var storage : Storage
+
+    private lateinit var client: Client
+    private lateinit var account: Account
+    private lateinit var db: Database
+    private lateinit var storage: Storage
+    private lateinit var realtime: Realtime
+
+    private val _items = MutableLiveData<String>()
+    val items: LiveData<String> = _items
 
     fun create(context: Context) {
         client = Client(context)
             .setEndpoint("https://demo.appwrite.io/v1")
             .setProject("608fa1dd20ef0")
-        account = Account(client);
-        db = Database(client);
-        storage = Storage(client);
+
+        account = Account(client)
+        db = Database(client)
+        storage = Storage(client)
+        realtime = Realtime(client)
     }
 
     private val _user = MutableLiveData<JSONObject>().apply {
@@ -44,14 +54,14 @@ class PlaygroundViewModel : ViewModel() {
 
     val user: LiveData<JSONObject> = _user
 
-    fun onLogin(context : Context) {
+    fun onLogin(context: Context) {
         viewModelScope.launch {
             try {
-                var response = account.createSession("user@appwrite.io","password")
+                val response = account.createSession("user@appwrite.io", "password")
                 getAccount()
                 var json = response.body?.string() ?: ""
                 json = JSONObject(json).toString(8)
-            } catch( e: AppwriteException) {
+            } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
@@ -60,37 +70,44 @@ class PlaygroundViewModel : ViewModel() {
     private fun getAccount() {
         viewModelScope.launch {
             try {
-                var response = account.get()
-                var json = response.body?.string() ?: ""
-                var user = JSONObject(json)
+                val response = account.get()
+                val json = response.body?.string() ?: ""
+                val user = JSONObject(json)
                 _user.postValue(user)
-            } catch( e: AppwriteException) {
+            } catch (e: AppwriteException) {
                 Log.d("Get Account", e.message.toString())
             }
         }
     }
 
-    fun onLoginOauth(activity: ComponentActivity, provider: String, context : Context) {
+    fun onLoginOauth(activity: ComponentActivity, provider: String, context: Context) {
         viewModelScope.launch {
             try {
-                var response = account.createOAuth2Session(activity,
+                var response = account.createOAuth2Session(
+                    activity,
                     provider,
-                    "appwrite-callback-6070749e6acd4://demo.appwrite.io/auth/oauth2/success",
-                    "appwrite-callback-6070749e6acd4://demo.appwrite.io/auth/oauth2/failur"
+                    "https://demo.appwrite.io/auth/oauth2/success",
+                    "https://demo.appwrite.io/auth/oauth2/failur"
                 )
-            } catch( e: AppwriteException) {
+            } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    fun onLogout(context : Context) {
+    fun subscribe() {
+        realtime.subscribe("collections.${collectionId}.documents") {
+            _items.postValue(it.toJson())
+        }
+    }
+
+    fun onLogout(context: Context) {
         viewModelScope.launch {
             try {
                 var response = account.deleteSession("current")
                 _user.postValue(null)
                 Toast.makeText(context, "Logged out", Toast.LENGTH_LONG).show()
-            } catch( e: AppwriteException) {
+            } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
@@ -99,13 +116,16 @@ class PlaygroundViewModel : ViewModel() {
     fun createDoc(context: Context) {
         viewModelScope.launch {
             try {
-                var response = db.createDocument(collectionId,mapOf("username" to "Android"), listOf("*"),
-                    listOf("*"))
-                var json = response.body?.string() ?: ""
-//                json = JSONObject(json).toString(8)
+                val response = db.createDocument(
+                    collectionId,
+                    mapOf("username" to "Android"),
+                    listOf("*"),
+                    listOf("*")
+                )
+                val json = response.body?.string() ?: ""
                 Toast.makeText(context, json, Toast.LENGTH_LONG).show()
             } catch (e: AppwriteException) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
             }
         }
     }
@@ -123,12 +143,13 @@ class PlaygroundViewModel : ViewModel() {
     }
 
     fun uploadFile(uri: Uri?, context: Context) {
-        val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri ?: return ,"r", null) ?: return
+        val parcelFileDescriptor =
+            context.contentResolver.openFileDescriptor(uri ?: return, "r", null) ?: return
 
         viewModelScope.launch {
             try {
                 val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-                val file1 =  File(context.cacheDir, context.contentResolver.getFileName(uri))
+                val file1 = File(context.cacheDir, context.contentResolver.getFileName(uri))
                 val outputStream = FileOutputStream(file1)
                 inputStream.copyTo(outputStream)
 
