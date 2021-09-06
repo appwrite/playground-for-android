@@ -13,11 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import io.appwrite.playgroundforandroid.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding : ActivityMainBinding
     private lateinit var viewModel: PlaygroundViewModel
-    private var output: TextView? = null
+    private val output: TextView by lazy {
+        binding.textView
+    }
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -33,36 +37,42 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         viewModel = ViewModelProvider(this).get(PlaygroundViewModel::class.java)
         viewModel.create(this)
 
-        output = findViewById(R.id.textView)
+        setClickListeners()
+        setObservers()
 
-        findViewById<Button>(R.id.loginWithEmail).setOnClickListener { view ->
+    }
+
+    private fun setClickListeners() {
+        binding.loginWithEmail.setOnClickListener { view ->
             viewModel.onLogin(this)
         }
-        findViewById<Button>(R.id.createDoc).setOnClickListener { view ->
+        binding.createDoc.setOnClickListener { view ->
             viewModel.createDoc(this)
         }
-        findViewById<Button>(R.id.loginWithFacebook).setOnClickListener { view ->
+        binding.loginWithFacebook.setOnClickListener { view ->
             viewModel.onLoginOauth(this, "facebook", this)
         }
-        findViewById<Button>(R.id.loginWithGithub).setOnClickListener { view ->
+        binding.loginWithGithub.setOnClickListener { view ->
             viewModel.onLoginOauth(this, "github", this)
         }
-        findViewById<Button>(R.id.loginWithGoogle).setOnClickListener { view ->
+        binding.loginWithGoogle.setOnClickListener { view ->
             viewModel.onLoginOauth(this, "google", this)
         }
-        findViewById<Button>(R.id.subscribeButton).setOnClickListener { view ->
+        binding.subscribeButton.setOnClickListener { view ->
             viewModel.subscribe()
             Toast.makeText(this, R.string.subscribed, Toast.LENGTH_SHORT).show()
         }
-        findViewById<Button>(R.id.logoutButton).setOnClickListener { view ->
+        binding.logoutButton.setOnClickListener { view ->
             viewModel.onLogout(this)
         }
 
-        findViewById<Button>(R.id.uploadFile).setOnClickListener { view ->
+        binding.uploadFile.setOnClickListener { view ->
             when {
                 ContextCompat.checkSelfPermission(
                     this,
@@ -83,16 +93,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun setObservers() {
         viewModel.user.observe(this) { user ->
             if (user != null) {
-                output?.text = user["name"].toString()
+                output.text = user["name"].toString()
             } else {
-                output?.text = "Anonymous"
+                output.text = getString(R.string.anonymous)
             }
         }
         viewModel.items.observe(this) {
-            Snackbar.make(window.decorView, "REALTIME EVENT: $it", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, "REALTIME EVENT: $it", Snackbar.LENGTH_LONG).show()
         }
     }
 }
