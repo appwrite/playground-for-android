@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     private fun setObservers() {
         viewModel.user.observe(this) { user ->
             if (user != null) {
-                output.text = user["name"].toString()
+                output.text = user.name.toString()
             } else {
                 output.text = getString(R.string.anonymous)
             }
