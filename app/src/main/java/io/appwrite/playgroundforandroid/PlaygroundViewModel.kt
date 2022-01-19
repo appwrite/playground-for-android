@@ -18,6 +18,7 @@ import io.appwrite.services.Account
 import io.appwrite.services.Database
 import io.appwrite.services.Realtime
 import io.appwrite.services.Storage
+import io.appwrite.models.User
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.File
@@ -48,19 +49,18 @@ class PlaygroundViewModel : ViewModel() {
         realtime = Realtime(client)
     }
 
-    private val _user = MutableLiveData<JSONObject>().apply {
+    private val _user = MutableLiveData<User>().apply {
         value = null
     }
 
-    val user: LiveData<JSONObject> = _user
+    val user: LiveData<User> = _user
 
     fun onLogin(context: Context) {
         viewModelScope.launch {
             try {
                 val response = account.createSession("user@appwrite.io", "password")
                 getAccount()
-                var json = response.body?.string() ?: ""
-                json = JSONObject(json).toString(8)
+                json = response.toMap().toString()
             } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
@@ -70,9 +70,7 @@ class PlaygroundViewModel : ViewModel() {
     private fun getAccount() {
         viewModelScope.launch {
             try {
-                val response = account.get()
-                val json = response.body?.string() ?: ""
-                val user = JSONObject(json)
+                val user = account.get()
                 _user.postValue(user)
             } catch (e: AppwriteException) {
                 Log.d("Get Account", e.message.toString())
@@ -118,6 +116,7 @@ class PlaygroundViewModel : ViewModel() {
             try {
                 val response = db.createDocument(
                     collectionId,
+                    "unique()",
                     mapOf("username" to "Android"),
                     listOf("*"),
                     listOf("*")
@@ -154,9 +153,8 @@ class PlaygroundViewModel : ViewModel() {
                 inputStream.copyTo(outputStream)
 
                 val read = listOf("*")
-                val response = storage.createFile(file1, read, read)
-                var json = response.body?.string() ?: ""
-                json = JSONObject(json).toString(4)
+                val response = storage.createFile("unique()", file1, read, read)
+                json = response.toMap().toString(4)
                 Toast.makeText(context, json, Toast.LENGTH_LONG).show()
             } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
