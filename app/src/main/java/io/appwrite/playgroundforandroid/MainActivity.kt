@@ -17,8 +17,9 @@ import io.appwrite.playgroundforandroid.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: PlaygroundViewModel
+
     private val output: TextView by lazy {
         binding.textView
     }
@@ -29,9 +30,9 @@ class MainActivity : AppCompatActivity() {
         }
 
     private val requestPermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            permissions.entries.forEach {
-                Log.d("DEBUG", "${it.key} = ${it.value}")
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it) {
+                getContent.launch("image/*")
             }
         }
 
@@ -73,23 +74,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.uploadFile.setOnClickListener { view ->
-            when {
+            when (PackageManager.PERMISSION_GRANTED) {
                 ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED -> {
+                ) -> {
                     getContent.launch("image/*")
                 }
                 else -> {
-                    requestPermissions.launch(
-                        arrayOf(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                    )
+                    requestPermissions.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
             }
         }
@@ -98,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     private fun setObservers() {
         viewModel.user.observe(this) { user ->
             if (user != null) {
-                output.text = user.name.toString()
+                output.text = user.name
             } else {
                 output.text = getString(R.string.anonymous)
             }
