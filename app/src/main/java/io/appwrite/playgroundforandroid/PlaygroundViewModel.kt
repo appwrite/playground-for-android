@@ -40,8 +40,9 @@ class PlaygroundViewModel : ViewModel() {
 
     fun create(context: Context) {
         client = Client(context)
-            .setEndpoint("https://demo.appwrite.io/v1")
-            .setProject("608fa1dd20ef0")
+            .setEndpoint("http://localhost/v1")
+            .setProject("test")
+            .setSelfSigned(true)
 
         account = Account(client)
         db = Database(client)
@@ -152,9 +153,9 @@ class PlaygroundViewModel : ViewModel() {
                 val outputStream = FileOutputStream(file1)
                 inputStream.copyTo(outputStream)
 
-                val read = listOf("*")
-                val response = storage.createFile("unique()", file1, read, read)
-                json = response.toMap().toString(4)
+                val read = listOf("role:all")
+                val response = storage.createFile("default","unique()", file1, read, read)
+                val json = response.toJson()
                 Toast.makeText(context, json, Toast.LENGTH_LONG).show()
             } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
