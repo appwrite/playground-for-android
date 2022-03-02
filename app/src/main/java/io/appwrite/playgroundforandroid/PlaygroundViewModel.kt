@@ -59,9 +59,8 @@ class PlaygroundViewModel : ViewModel() {
     fun onLogin(context: Context) {
         viewModelScope.launch {
             try {
-                val response = account.createSession("user@appwrite.io", "password")
+                account.createSession("user@appwrite.io", "password")
                 getAccount()
-                json = response.toMap().toString()
             } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
@@ -82,11 +81,11 @@ class PlaygroundViewModel : ViewModel() {
     fun onLoginOauth(activity: ComponentActivity, provider: String, context: Context) {
         viewModelScope.launch {
             try {
-                var response = account.createOAuth2Session(
+                account.createOAuth2Session(
                     activity,
                     provider,
                     "https://demo.appwrite.io/auth/oauth2/success",
-                    "https://demo.appwrite.io/auth/oauth2/failur"
+                    "https://demo.appwrite.io/auth/oauth2/failure"
                 )
             } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
@@ -103,7 +102,7 @@ class PlaygroundViewModel : ViewModel() {
     fun onLogout(context: Context) {
         viewModelScope.launch {
             try {
-                var response = account.deleteSession("current")
+                account.deleteSession("current")
                 _user.postValue(null)
                 Toast.makeText(context, "Logged out", Toast.LENGTH_LONG).show()
             } catch (e: AppwriteException) {
@@ -119,10 +118,10 @@ class PlaygroundViewModel : ViewModel() {
                     collectionId,
                     "unique()",
                     mapOf("username" to "Android"),
-                    listOf("*"),
-                    listOf("*")
+                    listOf("role:all"),
+                    listOf("role:all")
                 )
-                val json = response.body?.string() ?: ""
+                val json = response.toJson()
                 Toast.makeText(context, json, Toast.LENGTH_LONG).show()
             } catch (e: AppwriteException) {
                 e.printStackTrace()
