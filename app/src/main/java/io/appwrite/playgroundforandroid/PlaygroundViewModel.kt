@@ -14,55 +14,68 @@ import androidx.lifecycle.viewModelScope
 import io.appwrite.Client
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.extensions.toJson
-import io.appwrite.services.Account
-import io.appwrite.services.Database
-import io.appwrite.services.Realtime
-import io.appwrite.services.Storage
 import io.appwrite.models.User
+import io.appwrite.services.*
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
 class PlaygroundViewModel : ViewModel() {
 
-    private val collectionId = "608faab562521"
+    private val collectionId: String = "test"
+    private val functionId: String = "test"
+
+    private var documentId = ""
+    private var executionId = ""
 
     private lateinit var client: Client
+
     private lateinit var account: Account
+    private lateinit var avatars: Avatars
     private lateinit var db: Database
     private lateinit var storage: Storage
+    private lateinit var functions: Functions
+    private lateinit var locale: Locale
+    private lateinit var teams: Teams
     private lateinit var realtime: Realtime
 
     private val _items = MutableLiveData<String>()
     val items: LiveData<String> = _items
 
-    fun create(context: Context) {
+    fun createClient(context: Context) {
         client = Client(context)
             .setEndpoint("http://localhost/v1")
             .setProject("test")
             .setSelfSigned(true)
 
         account = Account(client)
+        avatars = Avatars(client)
         db = Database(client)
         storage = Storage(client)
+        functions = Functions(client)
+        locale = Locale(client)
+        teams = Teams(client)
         realtime = Realtime(client)
     }
 
-    private val _user = MutableLiveData<User>().apply {
+    private val _user = MutableLiveData<User?>().apply {
         value = null
     }
+    val user: LiveData<User?> = _user
 
-    val user: LiveData<User> = _user
+    private val _dialogText = MutableLiveData<String?>().apply {
+        value = null
+    }
+    val dialogText: LiveData<String?> = _dialogText
 
-    fun onLogin(context: Context) {
+    fun createSession(context: Context) {
         viewModelScope.launch {
             try {
                 account.createSession("user@appwrite.io", "password")
                 getAccount()
             } catch (e: AppwriteException) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                _dialogText.postValue(e.message)
             }
         }
     }
@@ -73,45 +86,34 @@ class PlaygroundViewModel : ViewModel() {
                 val user = account.get()
                 _user.postValue(user)
             } catch (e: AppwriteException) {
-                Log.d("Get Account", e.message.toString())
+                _dialogText.postValue(e.message)
             }
         }
     }
 
-    fun onLoginOauth(activity: ComponentActivity, provider: String, context: Context) {
+    fun createOAuth2Session(activity: ComponentActivity, provider: String, context: Context) {
         viewModelScope.launch {
             try {
-                account.createOAuth2Session(
-                    activity,
-                    provider,
-                    "https://demo.appwrite.io/auth/oauth2/success",
-                    "https://demo.appwrite.io/auth/oauth2/failure"
-                )
+                account.createOAuth2Session(activity, provider)
             } catch (e: AppwriteException) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                _dialogText.postValue(e.message)
             }
         }
     }
 
-    fun subscribe() {
-        realtime.subscribe("collections.${collectionId}.documents") {
-            _items.postValue(it.toJson())
-        }
-    }
-
-    fun onLogout(context: Context) {
+    fun deleteSession(context: Context) {
         viewModelScope.launch {
             try {
                 account.deleteSession("current")
                 _user.postValue(null)
-                Toast.makeText(context, "Logged out", Toast.LENGTH_LONG).show()
+                _dialogText.postValue("Logged out!")
             } catch (e: AppwriteException) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                _dialogText.postValue(e.message)
             }
         }
     }
 
-    fun createDoc(context: Context) {
+    fun createDocument(context: Context) {
         viewModelScope.launch {
             try {
                 val response = db.createDocument(
@@ -122,9 +124,71 @@ class PlaygroundViewModel : ViewModel() {
                     listOf("role:all")
                 )
                 val json = response.toJson()
-                Toast.makeText(context, json, Toast.LENGTH_LONG).show()
+                documentId = response.id
+                _dialogText.postValue(json)
             } catch (e: AppwriteException) {
-                e.printStackTrace()
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun listDocuments(context: Context) {
+        viewModelScope.launch {
+            try {
+                val response = db.listDocuments(collectionId)
+                val json = response.toJson()
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun deleteDocument(context: Context) {
+        viewModelScope.launch {
+            try {
+                val response = db.deleteDocument(collectionId, documentId)
+                val json = response.toJson()
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun createExecution(context: Context) {
+        viewModelScope.launch {
+            try {
+                val response = functions.createExecution(functionId, "{}")
+                val json = response.toJson()
+                executionId = response.id
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun listExecutions(context: Context) {
+        viewModelScope.launch {
+            try {
+                val response = functions.listExecutions(functionId)
+                val json = response.toJson()
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun getExecution(context: Context) {
+        viewModelScope.launch {
+            try {
+                val response = functions.getExecution(functionId, executionId)
+                val json = response.toJson()
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
             }
         }
     }
@@ -152,14 +216,25 @@ class PlaygroundViewModel : ViewModel() {
                 val outputStream = FileOutputStream(file1)
                 inputStream.copyTo(outputStream)
 
-                val read = listOf("role:all")
-                val response = storage.createFile("default","unique()", file1, read, read)
+                val permission = listOf("role:all")
+                val response = storage.createFile(
+                    bucketId = "default",
+                    fileId = "unique()",
+                    file = file1,
+                    read = permission,
+                    write = permission
+                )
                 val json = response.toJson()
-                Toast.makeText(context, json, Toast.LENGTH_LONG).show()
+                _dialogText.postValue(json)
             } catch (e: AppwriteException) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                _dialogText.postValue(e.message)
             }
+        }
+    }
 
+    fun subscribeToRealtime() {
+        realtime.subscribe("collections.${collectionId}.documents") {
+            _items.postValue(it.toJson())
         }
     }
 }
