@@ -29,8 +29,16 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="24dp"
                 android:text="TextView"
                 android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/createAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Account"
+                app:backgroundTint="#FF0874" />
 
             <Button
                 android:id="@+id/loginWithEmail"
@@ -61,10 +69,36 @@
                 android:text="Login With Google"
                 app:backgroundTint="#FF9800" />
 
+            <Button
+                android:id="@+id/updateEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update Email"
+                app:backgroundTint="#D4E157" />
+
+            <Button
+                android:id="@+id/updatePrefs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update Preferences"
+                app:backgroundTint="#26C6DA" />
+
+            <Button
+                android:id="@+id/deleteAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete account"
+                app:backgroundTint="#66BB6A" />
+
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete session (log out)" />
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="32dp" />
-
 
             <Button
                 android:id="@+id/createDoc"
@@ -89,7 +123,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="16dp" />
+                android:layout_height="32dp" />
 
             <Button
                 android:id="@+id/createExecution"
@@ -114,7 +148,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="16dp" />
+                android:layout_height="32dp" />
 
             <Button
                 android:id="@+id/uploadFile"
@@ -122,6 +156,20 @@
                 android:layout_height="wrap_content"
                 android:text="Upload File"
                 app:backgroundTint="#FF5722" />
+
+            <Button
+                android:id="@+id/listFiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List Files"
+                app:backgroundTint="#AD1457" />
+
+            <Button
+                android:id="@+id/deleteFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete File"
+                app:backgroundTint="#6A1B9A" />
 
             <Space
                 android:layout_width="match_parent"
@@ -132,16 +180,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Subscribe to realtime" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="32dp" />
-
-            <Button
-                android:id="@+id/logoutButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Logout" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

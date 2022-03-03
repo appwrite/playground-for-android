@@ -1,11 +1,6 @@
 package io.appwrite.playgroundforandroid
 
-import android.content.ContentResolver
 import android.content.Context
-import android.net.Uri
-import android.provider.OpenableColumns
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,16 +13,20 @@ import io.appwrite.models.User
 import io.appwrite.services.*
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.lang.System.currentTimeMillis
 
 class PlaygroundViewModel : ViewModel() {
 
-    private val collectionId: String = "test"
-    private val functionId: String = "test"
+    private val collectionId: String = "YOUR_COLLECTION_ID" // Single required 'username' string attribute
+    private val functionId: String = "YOUR_FUNCTION_ID"
+    private val bucketId: String = "YOUR_BUCKET_ID"
 
     private var documentId = ""
     private var executionId = ""
+    private var fileId = ""
 
     private lateinit var client: Client
 
@@ -69,21 +68,18 @@ class PlaygroundViewModel : ViewModel() {
     }
     val dialogText: LiveData<String?> = _dialogText
 
-    fun createSession(context: Context) {
-        viewModelScope.launch {
-            try {
-                account.createSession("user@appwrite.io", "password")
-                getAccount()
-            } catch (e: AppwriteException) {
-                _dialogText.postValue(e.message)
-            }
-        }
-    }
+    var emailId = currentTimeMillis()
 
-    private fun getAccount() {
+    fun createAccount() {
         viewModelScope.launch {
             try {
-                val user = account.get()
+                val user = account.create(
+                    userId = "unique()",
+                    email = "$emailId@appwrite.io",
+                    password = "password"
+                )
+                val json = user.toJson()
+                _dialogText.postValue(json)
                 _user.postValue(user)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
@@ -91,7 +87,36 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun createOAuth2Session(activity: ComponentActivity, provider: String, context: Context) {
+    fun createSession() {
+        viewModelScope.launch {
+            try {
+                val session = account.createSession(
+                    email = "$emailId@appwrite.io",
+                    password = "password"
+                )
+                val json = session.toJson()
+                _dialogText.postValue(json)
+                getAccount()
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun getAccount() {
+        viewModelScope.launch {
+            try {
+                val user = account.get()
+                val json = user.toJson()
+                _dialogText.postValue(json)
+                _user.postValue(user)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun createOAuth2Session(activity: ComponentActivity, provider: String) {
         viewModelScope.launch {
             try {
                 account.createOAuth2Session(activity, provider)
@@ -101,7 +126,51 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun deleteSession(context: Context) {
+    fun updateAccountEmail() {
+        viewModelScope.launch {
+            try {
+                emailId = currentTimeMillis()
+                val user = account.updateEmail(
+                    email = "$emailId@email.com",
+                    password = "password"
+                )
+                val json = user.toJson()
+                _user.postValue(user)
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun updateAccountPrefs() {
+        viewModelScope.launch {
+            try {
+                val user = account.updatePrefs(mapOf(
+                    "key" to "value"
+                ))
+                val json = user.toJson()
+                _user.postValue(user)
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            try {
+                account.delete()
+                _user.postValue(null)
+                _dialogText.postValue("Deleted account!")
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun deleteSession() {
         viewModelScope.launch {
             try {
                 account.deleteSession("current")
@@ -113,7 +182,7 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun createDocument(context: Context) {
+    fun createDocument() {
         viewModelScope.launch {
             try {
                 val response = db.createDocument(
@@ -132,7 +201,7 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun listDocuments(context: Context) {
+    fun listDocuments() {
         viewModelScope.launch {
             try {
                 val response = db.listDocuments(collectionId)
@@ -144,7 +213,7 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun deleteDocument(context: Context) {
+    fun deleteDocument() {
         viewModelScope.launch {
             try {
                 val response = db.deleteDocument(collectionId, documentId)
@@ -156,7 +225,7 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun createExecution(context: Context) {
+    fun createExecution() {
         viewModelScope.launch {
             try {
                 val response = functions.createExecution(functionId, "{}")
@@ -169,7 +238,7 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun listExecutions(context: Context) {
+    fun listExecutions() {
         viewModelScope.launch {
             try {
                 val response = functions.listExecutions(functionId)
@@ -181,7 +250,7 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun getExecution(context: Context) {
+    fun getExecution() {
         viewModelScope.launch {
             try {
                 val response = functions.getExecution(functionId, executionId)
@@ -193,36 +262,48 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    private fun ContentResolver.getFileName(fileUri: Uri): String {
-        var name = ""
-        val returnCursor = this.query(fileUri, null, null, null, null)
-        if (returnCursor != null) {
-            val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-            returnCursor.moveToFirst()
-            name = returnCursor.getString(nameIndex)
-            returnCursor.close()
-        }
-        return name
-    }
-
-    fun uploadFile(uri: Uri?, context: Context) {
-        val parcelFileDescriptor =
-            context.contentResolver.openFileDescriptor(uri ?: return, "r", null) ?: return
-
+    fun uploadFile(input: FileDescriptor, output: File) {
         viewModelScope.launch {
             try {
-                val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-                val file1 = File(context.cacheDir, context.contentResolver.getFileName(uri))
-                val outputStream = FileOutputStream(file1)
+                val inputStream = FileInputStream(input)
+                val outputStream = FileOutputStream(output)
                 inputStream.copyTo(outputStream)
 
                 val permission = listOf("role:all")
                 val response = storage.createFile(
-                    bucketId = "default",
+                    bucketId = bucketId,
                     fileId = "unique()",
-                    file = file1,
+                    file = output,
                     read = permission,
                     write = permission
+                )
+                fileId = response.id
+                val json = response.toJson()
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun listFiles() {
+        viewModelScope.launch {
+            try {
+                val response = storage.listFiles(bucketId = bucketId)
+                val json = response.toJson()
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
+    fun deleteFile() {
+        viewModelScope.launch {
+            try {
+                val response = storage.deleteFile(
+                    bucketId = bucketId,
+                    fileId = fileId
                 )
                 val json = response.toJson()
                 _dialogText.postValue(json)

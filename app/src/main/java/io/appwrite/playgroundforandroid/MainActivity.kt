@@ -1,7 +1,6 @@
 package io.appwrite.playgroundforandroid
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -12,8 +11,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import io.appwrite.playgroundforandroid.databinding.ActivityMainBinding
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +25,10 @@ class MainActivity : AppCompatActivity() {
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            viewModel.uploadFile(uri, this)
+            uri ?: return@registerForActivityResult
+            val descriptor = contentResolver.openFileDescriptor(uri, "r", null)
+            val copyDest = File(cacheDir, contentResolver.getFileName(uri))
+            viewModel.uploadFile(descriptor!!.fileDescriptor, copyDest)
         }
 
     private val requestPermissions =
@@ -46,46 +48,57 @@ class MainActivity : AppCompatActivity() {
 
         setClickListeners()
         setObservers()
-
     }
 
     private fun setClickListeners() {
+        binding.createAccount.setOnClickListener {
+            viewModel.createAccount()
+        }
         binding.loginWithEmail.setOnClickListener {
-            viewModel.createSession(this)
+            viewModel.createSession()
         }
         binding.createDoc.setOnClickListener {
-            viewModel.createDocument(this)
+            viewModel.createDocument()
         }
         binding.listDoc.setOnClickListener {
-            viewModel.listDocuments(this)
+            viewModel.listDocuments()
         }
         binding.deleteDoc.setOnClickListener {
-            viewModel.deleteDocument(this)
+            viewModel.deleteDocument()
         }
         binding.createExecution.setOnClickListener {
-            viewModel.createExecution(this)
+            viewModel.createExecution()
         }
         binding.listExecutions.setOnClickListener {
-            viewModel.listExecutions(this)
+            viewModel.listExecutions()
         }
         binding.getExecution.setOnClickListener {
-            viewModel.getExecution(this)
+            viewModel.getExecution()
         }
         binding.loginWithFacebook.setOnClickListener {
-            viewModel.createOAuth2Session(this, "facebook", this)
+            viewModel.createOAuth2Session(this, "facebook")
         }
         binding.loginWithGithub.setOnClickListener {
-            viewModel.createOAuth2Session(this, "github", this)
+            viewModel.createOAuth2Session(this, "github")
         }
         binding.loginWithGoogle.setOnClickListener {
-            viewModel.createOAuth2Session(this, "google", this)
+            viewModel.createOAuth2Session(this, "google")
+        }
+        binding.updateEmail.setOnClickListener {
+            viewModel.updateAccountEmail()
+        }
+        binding.updatePrefs.setOnClickListener {
+            viewModel.updateAccountPrefs()
+        }
+        binding.deleteAccount.setOnClickListener {
+            viewModel.deleteAccount()
         }
         binding.subscribeButton.setOnClickListener {
             viewModel.subscribeToRealtime()
             Toast.makeText(this, R.string.subscribed, Toast.LENGTH_SHORT).show()
         }
         binding.logoutButton.setOnClickListener {
-            viewModel.deleteSession(this)
+            viewModel.deleteSession()
         }
 
         binding.uploadFile.setOnClickListener {
@@ -101,12 +114,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        binding.listFiles.setOnClickListener {
+            viewModel.listFiles()
+        }
+        binding.deleteFile.setOnClickListener {
+            viewModel.deleteFile()
+        }
     }
 
     private fun setObservers() {
         viewModel.user.observe(this) { user ->
             if (user != null) {
-                output.text = user.name
+                output.text = "${user.name} ${user.email}"
             } else {
                 output.text = getString(R.string.anonymous)
             }
