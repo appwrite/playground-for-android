@@ -14,13 +14,12 @@ import androidx.lifecycle.viewModelScope
 import io.appwrite.Client
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.extensions.toJson
+import io.appwrite.models.User
 import io.appwrite.services.Account
 import io.appwrite.services.Database
 import io.appwrite.services.Realtime
 import io.appwrite.services.Storage
-import io.appwrite.models.User
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -60,7 +59,7 @@ class PlaygroundViewModel : ViewModel() {
             try {
                 val response = account.createSession("user@appwrite.io", "password")
                 getAccount()
-                json = response.toMap().toString()
+                val json = response.toMap().toString()
             } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
@@ -121,7 +120,8 @@ class PlaygroundViewModel : ViewModel() {
                     listOf("*"),
                     listOf("*")
                 )
-                val json = response.body?.string() ?: ""
+
+                val json = response.collection
                 Toast.makeText(context, json, Toast.LENGTH_LONG).show()
             } catch (e: AppwriteException) {
                 e.printStackTrace()
@@ -154,7 +154,7 @@ class PlaygroundViewModel : ViewModel() {
 
                 val read = listOf("*")
                 val response = storage.createFile("unique()", file1, read, read)
-                json = response.toMap().toString(4)
+                val json = response.toMap().toString()
                 Toast.makeText(context, json, Toast.LENGTH_LONG).show()
             } catch (e: AppwriteException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
