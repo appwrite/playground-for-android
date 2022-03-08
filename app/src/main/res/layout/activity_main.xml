@@ -9,12 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="@dimen/margin_small"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,14 +20,14 @@
             android:id="@+id/loginWithEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login with Email"
-            app:backgroundTint="#6C6A6A" />
+            android:text="@string/login_with_email"
+            app:backgroundTint="@color/dark_grey" />
 
         <Button
             android:id="@+id/createDoc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create Doc"
+            android:text="@string/create_doc"
             app:backgroundTint="#E34A4A" />
 
         <Space
@@ -43,22 +38,22 @@
             android:id="@+id/loginWithFacebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login with Facebook"
-            app:backgroundTint="#3F67E3" />
+            android:text="@string/login_with_facebook"
+            app:backgroundTint="@color/violet" />
 
         <Button
             android:id="@+id/loginWithGithub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login with Github"
-            app:backgroundTint="#0C0B0B" />
+            android:text="@string/login_with_github"
+            app:backgroundTint="@color/blur_black" />
 
         <Button
             android:id="@+id/loginWithGoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login With Google"
-            app:backgroundTint="#B81B1B" />
+            android:text="@string/login_with_google"
+            app:backgroundTint="@color/dark_red" />
 
         <Space
             android:layout_width="match_parent"
@@ -68,14 +63,14 @@
             android:id="@+id/uploadFile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Upload File"
-            app:backgroundTint="#B81B1B" />
+            android:text="@string/upload_file"
+            app:backgroundTint="@color/dark_red" />
 
         <Button
             android:id="@+id/subscribeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Subscribe to realtime" />
+            android:text="@string/subscribe_to_realtime" />
 
         <Space
             android:layout_width="match_parent"
@@ -86,7 +81,7 @@
             android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/textview" />
 
         <Space
             android:layout_width="match_parent"
@@ -96,6 +91,6 @@
             android:id="@+id/logoutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Logout" />
+            android:text="@string/logout" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
