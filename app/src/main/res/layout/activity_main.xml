@@ -6,96 +6,180 @@
     android:layout_height="match_parent"
     tools:context="io.appwrite.playgroundforandroid.MainActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/loginWithEmail"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login with Email"
-            app:backgroundTint="#6C6A6A" />
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/createDoc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create Doc"
-            app:backgroundTint="#E34A4A" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="24dp"
+                android:text="TextView"
+                android:textAlignment="center" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            <Button
+                android:id="@+id/createAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Account"
+                app:backgroundTint="#FF0874" />
 
-        <Button
-            android:id="@+id/loginWithFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login with Facebook"
-            app:backgroundTint="#3F67E3" />
+            <Button
+                android:id="@+id/loginWithEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login with Email"
+                app:backgroundTint="#AD1457" />
 
-        <Button
-            android:id="@+id/loginWithGithub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login with Github"
-            app:backgroundTint="#0C0B0B" />
 
-        <Button
-            android:id="@+id/loginWithGoogle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login With Google"
-            app:backgroundTint="#B81B1B" />
+            <Button
+                android:id="@+id/loginWithFacebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login with Facebook"
+                app:backgroundTint="#8BC34A" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            <Button
+                android:id="@+id/loginWithGithub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login with Github"
+                app:backgroundTint="#FFEB3B" />
 
-        <Button
-            android:id="@+id/uploadFile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Upload File"
-            app:backgroundTint="#B81B1B" />
+            <Button
+                android:id="@+id/loginWithGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login With Google"
+                app:backgroundTint="#FF9800" />
 
-        <Button
-            android:id="@+id/subscribeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Subscribe to realtime" />
+            <Button
+                android:id="@+id/updateEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update Email"
+                app:backgroundTint="#D4E157" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            <Button
+                android:id="@+id/updatePrefs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update Preferences"
+                app:backgroundTint="#26C6DA" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:textAlignment="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            <Button
+                android:id="@+id/deleteAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete account"
+                app:backgroundTint="#66BB6A" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete session (log out)" />
 
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Logout" />
-    </LinearLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <Button
+                android:id="@+id/createDoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Document"
+                app:backgroundTint="#F44336" />
+
+            <Button
+                android:id="@+id/listDoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List Documents"
+                app:backgroundTint="#9C27B0" />
+
+            <Button
+                android:id="@+id/deleteDoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete Document"
+                app:backgroundTint="#673AB7" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <Button
+                android:id="@+id/createExecution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Execution"
+                app:backgroundTint="#3F51B5" />
+
+            <Button
+                android:id="@+id/listExecutions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List Executions"
+                app:backgroundTint="#2196F3" />
+
+            <Button
+                android:id="@+id/getExecution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Get Execution"
+                app:backgroundTint="#009688" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <Button
+                android:id="@+id/uploadFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload File"
+                app:backgroundTint="#FF5722" />
+
+            <Button
+                android:id="@+id/listFiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List Files"
+                app:backgroundTint="#AD1457" />
+
+            <Button
+                android:id="@+id/deleteFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete File"
+                app:backgroundTint="#6A1B9A" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <Button
+                android:id="@+id/subscribeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Subscribe to realtime" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
