@@ -21,7 +21,7 @@ import java.lang.System.currentTimeMillis
 
 class PlaygroundViewModel : ViewModel() {
 
-    private val endpoint = "http://192.168.4.139/v1"
+    private val endpoint = "YOUR_ENDPOINT"
     private val projectId = "YOUR_PROJECT_ID"
     private val collectionId = "YOUR_COLLECTION_ID" // Single required 'username' string attribute
     private val functionId = "YOUR_FUNCTION_ID"
