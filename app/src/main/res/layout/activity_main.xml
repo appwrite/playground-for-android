@@ -84,6 +84,13 @@
                 app:backgroundTint="#26C6DA" />
 
             <Button
+                android:id="@+id/updateStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update Preferences"
+                app:backgroundTint="#26C6DA" />
+
+            <Button
                 android:id="@+id/logoutButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

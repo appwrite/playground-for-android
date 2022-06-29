@@ -90,6 +90,9 @@ class MainActivity : AppCompatActivity() {
         binding.updatePrefs.setOnClickListener {
             viewModel.updateAccountPrefs()
         }
+        binding.updateStatus.setOnClickListener {
+            viewModel.updateStatus()
+        }
         binding.subscribeButton.setOnClickListener {
             viewModel.subscribeToRealtime()
             Toast.makeText(this, R.string.subscribed, Toast.LENGTH_SHORT).show()

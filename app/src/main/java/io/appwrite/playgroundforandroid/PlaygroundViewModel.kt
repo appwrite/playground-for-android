@@ -162,6 +162,19 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
+    fun updateStatus() {
+        viewModelScope.launch {
+            try {
+                val user = account.updateStatus()
+                val json = user.toJson()
+                _user.postValue(user)
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
     fun deleteSession() {
         viewModelScope.launch {
             try {
