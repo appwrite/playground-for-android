@@ -90,9 +90,6 @@ class MainActivity : AppCompatActivity() {
         binding.updatePrefs.setOnClickListener {
             viewModel.updateAccountPrefs()
         }
-        binding.deleteAccount.setOnClickListener {
-            viewModel.deleteAccount()
-        }
         binding.subscribeButton.setOnClickListener {
             viewModel.subscribeToRealtime()
             Toast.makeText(this, R.string.subscribed, Toast.LENGTH_SHORT).show()
