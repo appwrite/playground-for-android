@@ -84,11 +84,11 @@
                 app:backgroundTint="#26C6DA" />
 
             <Button
-                android:id="@+id/deleteAccount"
+                android:id="@+id/updateStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete account"
-                app:backgroundTint="#66BB6A" />
+                android:text="Update Preferences"
+                app:backgroundTint="#26C6DA" />
 
             <Button
                 android:id="@+id/logoutButton"

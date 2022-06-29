@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import io.appwrite.Client
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.extensions.toJson
+import io.appwrite.models.InputFile
 import io.appwrite.models.User
 import io.appwrite.services.*
 import kotlinx.coroutines.launch
@@ -20,9 +21,12 @@ import java.lang.System.currentTimeMillis
 
 class PlaygroundViewModel : ViewModel() {
 
-    private val collectionId: String = "YOUR_COLLECTION_ID" // Single required 'username' string attribute
-    private val functionId: String = "YOUR_FUNCTION_ID"
-    private val bucketId: String = "YOUR_BUCKET_ID"
+    private val endpoint = "YOUR_ENDPOINT"
+    private val projectId = "YOUR_PROJECT_ID"
+    private val collectionId = "YOUR_COLLECTION_ID" // Single required 'username' string attribute
+    private val functionId = "YOUR_FUNCTION_ID"
+    private val bucketId = "YOUR_BUCKET_ID"
+    private var databaseId = "YOUR_DATABASE_ID"
 
     private var documentId = ""
     private var executionId = ""
@@ -32,7 +36,7 @@ class PlaygroundViewModel : ViewModel() {
 
     private lateinit var account: Account
     private lateinit var avatars: Avatars
-    private lateinit var db: Database
+    private lateinit var databases: Databases
     private lateinit var storage: Storage
     private lateinit var functions: Functions
     private lateinit var locale: Locale
@@ -44,13 +48,13 @@ class PlaygroundViewModel : ViewModel() {
 
     fun createClient(context: Context) {
         client = Client(context)
-            .setEndpoint("http://localhost/v1")
-            .setProject("test")
+            .setEndpoint(endpoint)
+            .setProject(projectId)
             .setSelfSigned(true)
 
         account = Account(client)
         avatars = Avatars(client)
-        db = Database(client)
+        databases = Databases(client, databaseId)
         storage = Storage(client)
         functions = Functions(client)
         locale = Locale(client)
@@ -90,7 +94,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createSession() {
         viewModelScope.launch {
             try {
-                val session = account.createSession(
+                val session = account.createEmailSession(
                     email = "$emailId@appwrite.io",
                     password = "password"
                 )
@@ -158,12 +162,13 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun deleteAccount() {
+    fun updateStatus() {
         viewModelScope.launch {
             try {
-                account.delete()
-                _user.postValue(null)
-                _dialogText.postValue("Deleted account!")
+                val user = account.updateStatus()
+                val json = user.toJson()
+                _user.postValue(user)
+                _dialogText.postValue(json)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
             }
@@ -185,7 +190,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createDocument() {
         viewModelScope.launch {
             try {
-                val response = db.createDocument(
+                val response = databases.createDocument(
                     collectionId,
                     "unique()",
                     mapOf("username" to "Android"),
@@ -204,7 +209,7 @@ class PlaygroundViewModel : ViewModel() {
     fun listDocuments() {
         viewModelScope.launch {
             try {
-                val response = db.listDocuments(collectionId)
+                val response = databases.listDocuments(collectionId)
                 val json = response.toJson()
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
@@ -216,7 +221,7 @@ class PlaygroundViewModel : ViewModel() {
     fun deleteDocument() {
         viewModelScope.launch {
             try {
-                val response = db.deleteDocument(collectionId, documentId)
+                val response = databases.deleteDocument(collectionId, documentId)
                 val json = response.toJson()
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
@@ -262,18 +267,18 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun uploadFile(input: FileDescriptor, output: File) {
+    fun uploadFile(input: FileDescriptor, file: File) {
         viewModelScope.launch {
             try {
                 val inputStream = FileInputStream(input)
-                val outputStream = FileOutputStream(output)
+                val outputStream = FileOutputStream(file)
                 inputStream.copyTo(outputStream)
 
                 val permission = listOf("role:all")
                 val response = storage.createFile(
                     bucketId = bucketId,
                     fileId = "unique()",
-                    file = output,
+                    file = InputFile.fromFile(file),
                     read = permission,
                     write = permission
                 )

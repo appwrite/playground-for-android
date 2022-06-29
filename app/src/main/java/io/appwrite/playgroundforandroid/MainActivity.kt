@@ -90,8 +90,8 @@ class MainActivity : AppCompatActivity() {
         binding.updatePrefs.setOnClickListener {
             viewModel.updateAccountPrefs()
         }
-        binding.deleteAccount.setOnClickListener {
-            viewModel.deleteAccount()
+        binding.updateStatus.setOnClickListener {
+            viewModel.updateStatus()
         }
         binding.subscribeButton.setOnClickListener {
             viewModel.subscribeToRealtime()
