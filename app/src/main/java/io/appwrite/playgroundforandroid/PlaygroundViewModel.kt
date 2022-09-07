@@ -7,17 +7,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.appwrite.Client
+import io.appwrite.Permission
+import io.appwrite.Role
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.extensions.toJson
-import io.appwrite.models.InputFile
-import io.appwrite.models.User
+import io.appwrite.models.*
 import io.appwrite.services.*
+import io.appwrite.services.Locale
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.lang.System.currentTimeMillis
+import io.appwrite.models.Account as AppwriteAccount
+import io.appwrite.models.File as AppwriteFile
 
 class PlaygroundViewModel : ViewModel() {
 
@@ -54,7 +58,7 @@ class PlaygroundViewModel : ViewModel() {
 
         account = Account(client)
         avatars = Avatars(client)
-        databases = Databases(client, databaseId)
+        databases = Databases(client)
         storage = Storage(client)
         functions = Functions(client)
         locale = Locale(client)
@@ -62,14 +66,10 @@ class PlaygroundViewModel : ViewModel() {
         realtime = Realtime(client)
     }
 
-    private val _user = MutableLiveData<User?>().apply {
-        value = null
-    }
-    val user: LiveData<User?> = _user
+    private val _user = MutableLiveData<AppwriteAccount?>(null)
+    val user: LiveData<AppwriteAccount?> = _user
 
-    private val _dialogText = MutableLiveData<String?>().apply {
-        value = null
-    }
+    private val _dialogText = MutableLiveData<String?>(null)
     val dialogText: LiveData<String?> = _dialogText
 
     var emailId = currentTimeMillis()
@@ -77,7 +77,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createAccount() {
         viewModelScope.launch {
             try {
-                val user = account.create(
+                val user: AppwriteAccount = account.create(
                     userId = "unique()",
                     email = "$emailId@appwrite.io",
                     password = "password"
@@ -94,7 +94,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createSession() {
         viewModelScope.launch {
             try {
-                val session = account.createEmailSession(
+                val session: Session = account.createEmailSession(
                     email = "$emailId@appwrite.io",
                     password = "password"
                 )
@@ -110,7 +110,7 @@ class PlaygroundViewModel : ViewModel() {
     fun getAccount() {
         viewModelScope.launch {
             try {
-                val user = account.get()
+                val user: AppwriteAccount = account.get()
                 val json = user.toJson()
                 _dialogText.postValue(json)
                 _user.postValue(user)
@@ -134,7 +134,7 @@ class PlaygroundViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 emailId = currentTimeMillis()
-                val user = account.updateEmail(
+                val user: AppwriteAccount = account.updateEmail(
                     email = "$emailId@email.com",
                     password = "password"
                 )
@@ -150,9 +150,11 @@ class PlaygroundViewModel : ViewModel() {
     fun updateAccountPrefs() {
         viewModelScope.launch {
             try {
-                val user = account.updatePrefs(mapOf(
-                    "key" to "value"
-                ))
+                val user: AppwriteAccount = account.updatePrefs(
+                    mapOf(
+                        "key" to "value"
+                    )
+                )
                 val json = user.toJson()
                 _user.postValue(user)
                 _dialogText.postValue(json)
@@ -165,7 +167,7 @@ class PlaygroundViewModel : ViewModel() {
     fun updateStatus() {
         viewModelScope.launch {
             try {
-                val user = account.updateStatus()
+                val user: AppwriteAccount = account.updateStatus()
                 val json = user.toJson()
                 _user.postValue(user)
                 _dialogText.postValue(json)
@@ -190,15 +192,21 @@ class PlaygroundViewModel : ViewModel() {
     fun createDocument() {
         viewModelScope.launch {
             try {
-                val response = databases.createDocument(
+                val document: Document = databases.createDocument(
+                    databaseId,
                     collectionId,
-                    "unique()",
-                    mapOf("username" to "Android"),
-                    listOf("role:all"),
-                    listOf("role:all")
+                    documentId = "unique()",
+                    data = mapOf(
+                        "username" to "Android"
+                    ),
+                    permissions = listOf(
+                        Permission.read(Role.users()),
+                        Permission.update(Role.users()),
+                        Permission.delete(Role.users()),
+                    ),
                 )
-                val json = response.toJson()
-                documentId = response.id
+                val json = document.toJson()
+                documentId = document.id
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
@@ -209,8 +217,11 @@ class PlaygroundViewModel : ViewModel() {
     fun listDocuments() {
         viewModelScope.launch {
             try {
-                val response = databases.listDocuments(collectionId)
-                val json = response.toJson()
+                val documentList: DocumentList = databases.listDocuments(
+                    databaseId,
+                    collectionId
+                )
+                val json = documentList.toJson()
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
@@ -221,9 +232,12 @@ class PlaygroundViewModel : ViewModel() {
     fun deleteDocument() {
         viewModelScope.launch {
             try {
-                val response = databases.deleteDocument(collectionId, documentId)
-                val json = response.toJson()
-                _dialogText.postValue(json)
+                databases.deleteDocument(
+                    databaseId,
+                    collectionId,
+                    documentId
+                )
+                _dialogText.postValue("Deleted document!")
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
             }
@@ -233,9 +247,12 @@ class PlaygroundViewModel : ViewModel() {
     fun createExecution() {
         viewModelScope.launch {
             try {
-                val response = functions.createExecution(functionId, "{}")
-                val json = response.toJson()
-                executionId = response.id
+                val execution: Execution = functions.createExecution(
+                    functionId,
+                    "{}"
+                )
+                val json = execution.toJson()
+                executionId = execution.id
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
@@ -246,8 +263,8 @@ class PlaygroundViewModel : ViewModel() {
     fun listExecutions() {
         viewModelScope.launch {
             try {
-                val response = functions.listExecutions(functionId)
-                val json = response.toJson()
+                val executionList: ExecutionList = functions.listExecutions(functionId)
+                val json = executionList.toJson()
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
@@ -258,8 +275,11 @@ class PlaygroundViewModel : ViewModel() {
     fun getExecution() {
         viewModelScope.launch {
             try {
-                val response = functions.getExecution(functionId, executionId)
-                val json = response.toJson()
+                val execution: Execution = functions.getExecution(
+                    functionId,
+                    executionId
+                )
+                val json = execution.toJson()
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
@@ -274,16 +294,18 @@ class PlaygroundViewModel : ViewModel() {
                 val outputStream = FileOutputStream(file)
                 inputStream.copyTo(outputStream)
 
-                val permission = listOf("role:all")
-                val response = storage.createFile(
-                    bucketId = bucketId,
+                val storageFile: AppwriteFile = storage.createFile(
+                    bucketId,
                     fileId = "unique()",
                     file = InputFile.fromFile(file),
-                    read = permission,
-                    write = permission
+                    permissions = listOf(
+                        Permission.read(Role.users()),
+                        Permission.update(Role.users()),
+                        Permission.delete(Role.users()),
+                    ),
                 )
-                fileId = response.id
-                val json = response.toJson()
+                fileId = storageFile.id
+                val json = storageFile.toJson()
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
@@ -294,8 +316,8 @@ class PlaygroundViewModel : ViewModel() {
     fun listFiles() {
         viewModelScope.launch {
             try {
-                val response = storage.listFiles(bucketId = bucketId)
-                val json = response.toJson()
+                val fileList: FileList = storage.listFiles(bucketId)
+                val json = fileList.toJson()
                 _dialogText.postValue(json)
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
@@ -306,12 +328,11 @@ class PlaygroundViewModel : ViewModel() {
     fun deleteFile() {
         viewModelScope.launch {
             try {
-                val response = storage.deleteFile(
+                storage.deleteFile(
                     bucketId = bucketId,
                     fileId = fileId
                 )
-                val json = response.toJson()
-                _dialogText.postValue(json)
+                _dialogText.postValue("File deleted!")
             } catch (e: AppwriteException) {
                 _dialogText.postValue(e.message)
             }
@@ -319,7 +340,9 @@ class PlaygroundViewModel : ViewModel() {
     }
 
     fun subscribeToRealtime() {
-        realtime.subscribe("collections.${collectionId}.documents") {
+        val channel = "databases.${databaseId}.collections.${collectionId}.documents"
+
+        realtime.subscribe(channel) {
             _items.postValue(it.toJson())
         }
     }

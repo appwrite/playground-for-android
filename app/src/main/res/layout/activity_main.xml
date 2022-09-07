@@ -87,7 +87,7 @@
                 android:id="@+id/updateStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Update Preferences"
+                android:text="Update Status"
                 app:backgroundTint="#26C6DA" />
 
             <Button
