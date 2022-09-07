@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.appwrite.Client
+import io.appwrite.ID
 import io.appwrite.Permission
 import io.appwrite.Role
 import io.appwrite.exceptions.AppwriteException
@@ -78,7 +79,7 @@ class PlaygroundViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val user: AppwriteAccount = account.create(
-                    userId = "unique()",
+                    userId = ID.unique(),
                     email = "$emailId@appwrite.io",
                     password = "password"
                 )
@@ -195,7 +196,7 @@ class PlaygroundViewModel : ViewModel() {
                 val document: Document = databases.createDocument(
                     databaseId,
                     collectionId,
-                    documentId = "unique()",
+                    documentId = ID.unique(),
                     data = mapOf(
                         "username" to "Android"
                     ),
@@ -296,7 +297,7 @@ class PlaygroundViewModel : ViewModel() {
 
                 val storageFile: AppwriteFile = storage.createFile(
                     bucketId,
-                    fileId = "unique()",
+                    fileId = ID.unique(),
                     file = InputFile.fromFile(file),
                     permissions = listOf(
                         Permission.read(Role.users()),
