@@ -232,7 +232,10 @@ class PlaygroundViewModel : ViewModel() {
             try {
                 val documentList: DocumentList = databases.listDocuments(
                     databaseId,
-                    collectionId
+                    collectionId,
+                    queries = listOf(
+                        Query.equal("username", "Android")
+                    )
                 )
                 val json = documentList.toJson()
                 _dialogText.postValue(json)
