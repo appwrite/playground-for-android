@@ -108,6 +108,18 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
+    fun getSession() {
+        viewModelScope.launch {
+            try {
+                val session: Session = account.getSession("current")
+                val json = session.toJson()
+                _dialogText.postValue(json)
+            } catch (e: AppwriteException) {
+                _dialogText.postValue(e.message)
+            }
+        }
+    }
+
     fun getAccount() {
         viewModelScope.launch {
             try {
