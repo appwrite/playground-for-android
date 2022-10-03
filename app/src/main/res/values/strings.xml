@@ -2,4 +2,23 @@
     <string name="app_name">Playground For Android</string>
     <string name="subscribed">Subscribed to realtime! Try adding a document.</string>
     <string name="anonymous">Anonymous</string>
+    <string name="textview">TextView</string>
+    <string name="create_account">Create Account</string>
+    <string name="login_with_email">Login with Email</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_with_github">Login with Github</string>
+    <string name="login_with_google">Login With Google</string>
+    <string name="update_email">Update Email</string>
+    <string name="update_preferences">Update Preferences</string>
+    <string name="delete_session_log_out">Delete session (log out)</string>
+    <string name="create_document">Create Document</string>
+    <string name="list_documents">List Documents</string>
+    <string name="delete_document">Delete Document</string>
+    <string name="create_execution">Create Execution</string>
+    <string name="list_executions">List Executions</string>
+    <string name="get_execution">Get Execution</string>
+    <string name="upload_file">Upload File</string>
+    <string name="list_files">List Files</string>
+    <string name="delete_file">Delete File</string>
+    <string name="subscribe_to_realtime">Subscribe to realtime</string>
 </resources>
