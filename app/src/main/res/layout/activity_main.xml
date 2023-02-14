@@ -13,12 +13,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/_8dp"
+            android:layout_marginLeft="@dimen/_8dp"
+            android:layout_marginTop="@dimen/_8dp"
+            android:layout_marginEnd="@dimen/_8dp"
+            android:layout_marginRight="@dimen/_8dp"
+            android:layout_marginBottom="@dimen/_8dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,72 +29,72 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="24dp"
-                android:text="TextView"
+                android:layout_marginVertical="@dimen/_24dp"
+                android:text="@string/textview"
                 android:textAlignment="center" />
 
             <Button
                 android:id="@+id/createAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Account"
-                app:backgroundTint="#FF0874" />
+                android:text="@string/create_account"
+                app:backgroundTint="@color/pink" />
 
             <Button
                 android:id="@+id/loginWithEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login with Email"
-                app:backgroundTint="#AD1457" />
+                android:text="@string/login_with_email"
+                app:backgroundTint="@color/dark_pink" />
 
 
             <Button
                 android:id="@+id/loginWithFacebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login with Facebook"
-                app:backgroundTint="#8BC34A" />
+                android:text="@string/login_with_facebook"
+                app:backgroundTint="@color/light_green" />
 
             <Button
                 android:id="@+id/loginWithGithub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login with Github"
-                app:backgroundTint="#FFEB3B" />
+                android:text="@string/login_with_github"
+                app:backgroundTint="@color/yellow" />
 
             <Button
                 android:id="@+id/loginWithGoogle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login With Google"
-                app:backgroundTint="#FF9800" />
+                android:text="@string/login_with_google"
+                app:backgroundTint="@color/light_orange" />
 
             <Button
                 android:id="@+id/updateEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Update Email"
-                app:backgroundTint="#D4E157" />
+                android:text="@string/update_email"
+                app:backgroundTint="@color/lime_lighten_1" />
 
             <Button
                 android:id="@+id/updatePrefs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Update Preferences"
-                app:backgroundTint="#26C6DA" />
+                android:text="@string/update_preferences"
+                app:backgroundTint="@color/light_blue" />
 
             <Button
                 android:id="@+id/updateStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Update Status"
-                app:backgroundTint="#26C6DA" />
+                android:text="@string/update_preferences"
+                app:backgroundTint="@color/light_blue" />
 
             <Button
                 android:id="@+id/logoutButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete session (log out)" />
+                android:text="@string/delete_session_log_out" />
 
             <Space
                 android:layout_width="match_parent"
@@ -104,22 +104,22 @@
                 android:id="@+id/createDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Document"
-                app:backgroundTint="#F44336" />
+                android:text="@string/create_document"
+                app:backgroundTint="@color/light_red" />
 
             <Button
                 android:id="@+id/listDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="List Documents"
-                app:backgroundTint="#9C27B0" />
+                android:text="@string/list_documents"
+                app:backgroundTint="@color/dark_orchid" />
 
             <Button
                 android:id="@+id/deleteDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete Document"
-                app:backgroundTint="#673AB7" />
+                android:text="@string/delete_document"
+                app:backgroundTint="@color/purple_heart" />
 
             <Space
                 android:layout_width="match_parent"
@@ -129,57 +129,57 @@
                 android:id="@+id/createExecution"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Execution"
-                app:backgroundTint="#3F51B5" />
+                android:text="@string/create_execution"
+                app:backgroundTint="@color/dark_blue" />
 
             <Button
                 android:id="@+id/listExecutions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="List Executions"
-                app:backgroundTint="#2196F3" />
+                android:text="@string/list_executions"
+                app:backgroundTint="@color/dodger_blue" />
 
             <Button
                 android:id="@+id/getExecution"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Get Execution"
-                app:backgroundTint="#009688" />
+                android:text="@string/get_execution"
+                app:backgroundTint="@color/dark_green" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="32dp" />
+                android:layout_height="@dimen/_32dp" />
 
             <Button
                 android:id="@+id/uploadFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload File"
-                app:backgroundTint="#FF5722" />
+                android:text="@string/upload_file"
+                app:backgroundTint="@color/orange" />
 
             <Button
                 android:id="@+id/listFiles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="List Files"
-                app:backgroundTint="#AD1457" />
+                android:text="@string/list_files"
+                app:backgroundTint="@color/dark_pink" />
 
             <Button
                 android:id="@+id/deleteFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete File"
-                app:backgroundTint="#6A1B9A" />
+                android:text="@string/delete_file"
+                app:backgroundTint="@color/royal_purple" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="32dp" />
+                android:layout_height="@dimen/_32dp" />
 
             <Button
                 android:id="@+id/subscribeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Subscribe to realtime" />
+                android:text="@string/subscribe_to_realtime" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
