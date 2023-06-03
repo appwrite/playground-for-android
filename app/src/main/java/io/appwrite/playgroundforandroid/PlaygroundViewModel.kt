@@ -64,8 +64,8 @@ class PlaygroundViewModel : ViewModel() {
         realtime = Realtime(client)
     }
 
-    private val _user = MutableLiveData<AppwriteAccount?>(null)
-    val user: LiveData<AppwriteAccount?> = _user
+    private val _user = MutableLiveData<AppwriteAccount<Any>?>(null)
+    val user: LiveData<AppwriteAccount<Any>?> = _user
 
     private val _dialogText = MutableLiveData<String?>(null)
     val dialogText: LiveData<String?> = _dialogText
@@ -75,7 +75,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createAccount() {
         viewModelScope.launch {
             try {
-                val user: AppwriteAccount = account.create(
+                val user: AppwriteAccount<Any> = account.create(
                     userId = ID.unique(),
                     email = "$emailId@appwrite.io",
                     password = "password"
@@ -120,7 +120,7 @@ class PlaygroundViewModel : ViewModel() {
     fun getAccount() {
         viewModelScope.launch {
             try {
-                val user: AppwriteAccount = account.get()
+                val user: AppwriteAccount<Any> = account.get()
                 val json = user.toJson()
                 _dialogText.postValue(json)
                 _user.postValue(user)
@@ -144,7 +144,7 @@ class PlaygroundViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 emailId = currentTimeMillis()
-                val user: AppwriteAccount = account.updateEmail(
+                val user: AppwriteAccount<Any> = account.updateEmail(
                     email = "$emailId@email.com",
                     password = "password"
                 )
@@ -160,7 +160,7 @@ class PlaygroundViewModel : ViewModel() {
     fun updateAccountPrefs() {
         viewModelScope.launch {
             try {
-                val user: AppwriteAccount = account.updatePrefs(
+                val user: AppwriteAccount<Any> = account.updatePrefs(
                     mapOf(
                         "key" to "value"
                     )
@@ -177,7 +177,7 @@ class PlaygroundViewModel : ViewModel() {
     fun updateStatus() {
         viewModelScope.launch {
             try {
-                val user: AppwriteAccount = account.updateStatus()
+                val user: AppwriteAccount<Any> = account.updateStatus()
                 val json = user.toJson()
                 _user.postValue(user)
                 _dialogText.postValue(json)
@@ -202,7 +202,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createDocument() {
         viewModelScope.launch {
             try {
-                val document: Document = databases.createDocument(
+                val document: Document<Any> = databases.createDocument(
                     databaseId,
                     collectionId,
                     documentId = ID.unique(),
@@ -227,7 +227,7 @@ class PlaygroundViewModel : ViewModel() {
     fun listDocuments() {
         viewModelScope.launch {
             try {
-                val documentList: DocumentList = databases.listDocuments(
+                val documentList: DocumentList<Any> = databases.listDocuments(
                     databaseId,
                     collectionId,
                     queries = listOf(

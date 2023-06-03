@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "io.appwrite.playgroundforandroid"
@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    implementation 'io.appwrite:sdk-for-android:1.1.0'
+    implementation 'io.appwrite:sdk-for-android:1.2.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.8.0'
