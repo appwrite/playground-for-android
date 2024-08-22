@@ -10,6 +10,7 @@ import io.appwrite.*
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.extensions.toJson
 import io.appwrite.models.*
+import io.appwrite.models.User
 import io.appwrite.services.*
 import io.appwrite.services.Locale
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.lang.System.currentTimeMillis
-import io.appwrite.models.Account as AppwriteAccount
+import io.appwrite.models.User as AppwriteAccount
 import io.appwrite.models.File as AppwriteFile
 
 class PlaygroundViewModel : ViewModel() {
@@ -64,8 +65,8 @@ class PlaygroundViewModel : ViewModel() {
         realtime = Realtime(client)
     }
 
-    private val _user = MutableLiveData<AppwriteAccount<Any>?>(null)
-    val user: LiveData<AppwriteAccount<Any>?> = _user
+    private val _user = MutableLiveData<AppwriteAccount<Map<String, Any>>?>(null)
+    val user: LiveData<AppwriteAccount<Map<String, Any>>?> = _user
 
     private val _dialogText = MutableLiveData<String?>(null)
     val dialogText: LiveData<String?> = _dialogText
@@ -75,7 +76,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createAccount() {
         viewModelScope.launch {
             try {
-                val user: AppwriteAccount<Any> = account.create(
+                val user: User<Map<String, Any>> = account.create(
                     userId = ID.unique(),
                     email = "$emailId@appwrite.io",
                     password = "password"
@@ -92,7 +93,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createSession() {
         viewModelScope.launch {
             try {
-                val session: Session = account.createEmailSession(
+                val session: Session = account.createEmailPasswordSession(
                     email = "$emailId@appwrite.io",
                     password = "password"
                 )
@@ -120,7 +121,7 @@ class PlaygroundViewModel : ViewModel() {
     fun getAccount() {
         viewModelScope.launch {
             try {
-                val user: AppwriteAccount<Any> = account.get()
+                val user: User<Map<String, Any>> = account.get()
                 val json = user.toJson()
                 _dialogText.postValue(json)
                 _user.postValue(user)
@@ -130,7 +131,10 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun createOAuth2Session(activity: ComponentActivity, provider: String) {
+    fun createOAuth2Session(
+        activity: ComponentActivity,
+        provider: io.appwrite.enums.OAuthProvider
+    ) {
         viewModelScope.launch {
             try {
                 account.createOAuth2Session(activity, provider)
@@ -144,7 +148,7 @@ class PlaygroundViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 emailId = currentTimeMillis()
-                val user: AppwriteAccount<Any> = account.updateEmail(
+                val user: User<Map<String, Any>> = account.updateEmail(
                     email = "$emailId@email.com",
                     password = "password"
                 )
@@ -160,7 +164,7 @@ class PlaygroundViewModel : ViewModel() {
     fun updateAccountPrefs() {
         viewModelScope.launch {
             try {
-                val user: AppwriteAccount<Any> = account.updatePrefs(
+                val user: User<Map<String, Any>> = account.updatePrefs(
                     mapOf(
                         "key" to "value"
                     )
@@ -177,7 +181,7 @@ class PlaygroundViewModel : ViewModel() {
     fun updateStatus() {
         viewModelScope.launch {
             try {
-                val user: AppwriteAccount<Any> = account.updateStatus()
+                val user: User<Map<String, Any>> = account.updateStatus()
                 val json = user.toJson()
                 _user.postValue(user)
                 _dialogText.postValue(json)
@@ -202,7 +206,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createDocument() {
         viewModelScope.launch {
             try {
-                val document: Document<Any> = databases.createDocument(
+                val document: Document<Map<String, Any>> = databases.createDocument(
                     databaseId,
                     collectionId,
                     documentId = ID.unique(),
@@ -227,7 +231,7 @@ class PlaygroundViewModel : ViewModel() {
     fun listDocuments() {
         viewModelScope.launch {
             try {
-                val documentList: DocumentList<Any> = databases.listDocuments(
+                val documentList: DocumentList<Map<String, Any>> = databases.listDocuments(
                     databaseId,
                     collectionId,
                     queries = listOf(
