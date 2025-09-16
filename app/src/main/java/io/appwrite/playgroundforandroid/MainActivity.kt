@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import io.appwrite.playgroundforandroid.databinding.ActivityMainBinding
+import io.appwrite.enums.OAuthProvider
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -76,13 +77,13 @@ class MainActivity : AppCompatActivity() {
             viewModel.getExecution()
         }
         binding.loginWithFacebook.setOnClickListener {
-            viewModel.createOAuth2Session(this, "facebook")
+            viewModel.createOAuth2Session(this, OAuthProvider.FACEBOOK)
         }
         binding.loginWithGithub.setOnClickListener {
-            viewModel.createOAuth2Session(this, "github")
+            viewModel.createOAuth2Session(this, OAuthProvider.GITHUB)
         }
         binding.loginWithGoogle.setOnClickListener {
-            viewModel.createOAuth2Session(this, "google")
+            viewModel.createOAuth2Session(this, OAuthProvider.GOOGLE)
         }
         binding.updateEmail.setOnClickListener {
             viewModel.updateAccountEmail()
@@ -105,12 +106,13 @@ class MainActivity : AppCompatActivity() {
             when (PackageManager.PERMISSION_GRANTED) {
                 ContextCompat.checkSelfPermission(
                     this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
+                    Manifest.permission.READ_MEDIA_IMAGES,
+
                 ) -> {
                     getContent.launch("image/*")
                 }
                 else -> {
-                    requestPermissions.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    requestPermissions.launch(Manifest.permission.READ_MEDIA_IMAGES)
                 }
             }
         }
@@ -123,9 +125,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        viewModel.user.observe(this) { user ->
-            if (user != null) {
-                output.text = "${user.name} ${user.email}"
+        viewModel.user.observe(this) {
+            if (it != null) {
+                output.text = "${it.name} ${it.email}"
             } else {
                 output.text = getString(R.string.anonymous)
             }

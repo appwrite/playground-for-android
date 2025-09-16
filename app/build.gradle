@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    implementation 'io.appwrite:sdk-for-android:4.0.1'
+    implementation 'io.appwrite:sdk-for-android:5.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.12.0'

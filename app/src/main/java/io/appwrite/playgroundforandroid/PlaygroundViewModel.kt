@@ -10,6 +10,7 @@ import io.appwrite.*
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.extensions.toJson
 import io.appwrite.models.*
+import io.appwrite.models.User
 import io.appwrite.services.*
 import io.appwrite.services.Locale
 import kotlinx.coroutines.launch
@@ -92,7 +93,7 @@ class PlaygroundViewModel : ViewModel() {
     fun createSession() {
         viewModelScope.launch {
             try {
-                val session: Session = account.createEmailSession(
+                val session: Session = account.createEmailPasswordSession(
                     email = "$emailId@appwrite.io",
                     password = "password"
                 )
@@ -130,7 +131,10 @@ class PlaygroundViewModel : ViewModel() {
         }
     }
 
-    fun createOAuth2Session(activity: ComponentActivity, provider: String) {
+    fun createOAuth2Session(
+        activity: ComponentActivity,
+        provider: io.appwrite.enums.OAuthProvider
+    ) {
         viewModelScope.launch {
             try {
                 account.createOAuth2Session(activity, provider)
