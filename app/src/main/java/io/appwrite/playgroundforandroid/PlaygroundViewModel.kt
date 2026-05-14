@@ -10,7 +10,6 @@ import io.appwrite.*
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.extensions.toJson
 import io.appwrite.models.*
-import io.appwrite.models.User
 import io.appwrite.services.*
 import io.appwrite.services.Locale
 import kotlinx.coroutines.launch
@@ -19,17 +18,16 @@ import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.lang.System.currentTimeMillis
-import io.appwrite.models.User
 import io.appwrite.models.File as AppwriteFile
 
 class PlaygroundViewModel : ViewModel() {
 
-    private val endpoint = "YOUR_ENDPOINT"
-    private val projectId = "YOUR_PROJECT_ID"
-    private val collectionId = "YOUR_COLLECTION_ID" // Single required 'username' string attribute
+    private val endpoint = "https://fra.cloud.appwrite.io/v1"
+    private val projectId = "689dae79002772d9dcc3"
+    private val databaseId = "689dae84001470d8a9f8"
+    private val collectionId = "test" // Single required 'username' string attribute
     private val functionId = "YOUR_FUNCTION_ID"
     private val bucketId = "YOUR_BUCKET_ID"
-    private var databaseId = "YOUR_DATABASE_ID"
 
     private var documentId = ""
     private var executionId = ""
